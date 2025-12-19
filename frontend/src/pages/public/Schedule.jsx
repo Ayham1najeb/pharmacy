@@ -155,46 +155,46 @@ const Schedule = () => {
     const selectedSchedules = selectedDate ? getSchedulesForDate(selectedDate) : [];
 
     return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-900 py-12">
+        <div className="min-h-screen bg-slate-50 dark:bg-gray-900 font-sans text-slate-900 dark:text-white py-12">
             <div className="container mx-auto px-4 max-w-6xl">
                 {/* Header */}
                 <div className="text-center mb-10">
-                    <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full mb-6 border border-blue-100 shadow-sm">
+                    <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-1.5 rounded-full mb-6 border border-blue-100 dark:border-blue-800 shadow-sm">
                         <span className="text-lg">📅</span>
                         <span className="font-medium text-sm">جدول المناوبات</span>
                     </div>
-                    <h1 className="text-4xl font-black tracking-tight text-slate-900 mb-3">
+                    <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-3">
                         الصيدليات المناوبة
                     </h1>
-                    <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-lg text-slate-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
                         استعرض جدول المناوبات الشهري واعرف الصيدليات المتاحة لخدمتك في أي يوم
                     </p>
                 </div>
 
                 {/* Month Navigation */}
-                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-slate-200 dark:border-gray-700 p-6 mb-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
                         <button
                             onClick={prevMonth}
-                            className="px-5 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all font-medium shadow-sm hover:shadow"
+                            className="px-5 py-2.5 bg-white dark:bg-gray-700 border border-slate-200 dark:border-gray-600 text-slate-600 dark:text-gray-300 rounded-xl hover:bg-slate-50 dark:hover:bg-gray-600 hover:border-slate-300 transition-all font-medium shadow-sm hover:shadow"
                         >
                             ← الشهر السابق
                         </button>
-                        <h2 className="text-2xl font-bold text-slate-800">
-                            {arabicMonths[currentMonth - 1]} <span className="text-slate-400 font-light">{currentYear}</span>
+                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
+                            {arabicMonths[currentMonth - 1]} <span className="text-slate-400 dark:text-gray-500 font-light">{currentYear}</span>
                         </h2>
                         <button
                             onClick={nextMonth}
-                            className="px-5 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all font-medium shadow-sm hover:shadow"
+                            className="px-5 py-2.5 bg-white dark:bg-gray-700 border border-slate-200 dark:border-gray-600 text-slate-600 dark:text-gray-300 rounded-xl hover:bg-slate-50 dark:hover:bg-gray-600 hover:border-slate-300 transition-all font-medium shadow-sm hover:shadow"
                         >
                             الشهر التالي →
                         </button>
                     </div>
 
                     {/* Day Headers */}
-                    <div className="grid grid-cols-7 gap-px bg-slate-100 border border-slate-200 rounded-t-xl overflow-hidden text-center mb-px">
+                    <div className="grid grid-cols-7 gap-px bg-slate-100 dark:bg-gray-700 border border-slate-200 dark:border-gray-600 rounded-t-xl overflow-hidden text-center mb-px">
                         {arabicDays.map(day => (
-                            <div key={day} className="py-3 bg-slate-50 font-semibold text-slate-500 text-sm">
+                            <div key={day} className="py-3 bg-slate-50 dark:bg-gray-800 font-semibold text-slate-500 dark:text-gray-400 text-sm">
                                 {day}
                             </div>
                         ))}
@@ -202,12 +202,12 @@ const Schedule = () => {
 
                     {/* Calendar Grid */}
                     {loading ? (
-                        <div className="text-center py-24 bg-slate-50/50 rounded-b-xl border border-slate-200/50">
-                            <div className="w-8 h-8 border-2 border-slate-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-3"></div>
-                            <p className="text-slate-400 font-medium">جاري جلب البيانات...</p>
+                        <div className="text-center py-24 bg-slate-50/50 dark:bg-gray-800/50 rounded-b-xl border border-slate-200/50 dark:border-gray-700">
+                            <div className="w-8 h-8 border-2 border-slate-200 dark:border-gray-600 border-t-blue-600 rounded-full animate-spin mx-auto mb-3"></div>
+                            <p className="text-slate-400 dark:text-gray-500 font-medium">جاري جلب البيانات...</p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-7 gap-px bg-slate-200 rounded-b-xl overflow-hidden border-x border-b border-slate-200">
+                        <div className="grid grid-cols-7 gap-px bg-slate-200 dark:bg-gray-700 rounded-b-xl overflow-hidden border-x border-b border-slate-200 dark:border-gray-700">
                             {renderCalendar()}
                         </div>
                     )}
@@ -215,16 +215,16 @@ const Schedule = () => {
 
                 {/* Selected Day Details */}
                 {selectedDate && (
-                    <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8 animate-fade-in-up">
-                        <div className="flex items-center gap-3 mb-8 pb-6 border-b border-slate-100">
-                            <span className="flex items-center justify-center w-12 h-12 bg-blue-50 text-blue-600 rounded-xl text-xl font-bold border border-blue-100">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-gray-700 p-8 animate-fade-in-up">
+                        <div className="flex items-center gap-3 mb-8 pb-6 border-b border-slate-100 dark:border-gray-700">
+                            <span className="flex items-center justify-center w-12 h-12 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl text-xl font-bold border border-blue-100 dark:border-blue-800">
                                 {selectedDate}
                             </span>
                             <div>
-                                <h3 className="text-xl font-bold text-slate-900">
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                                     مناوبات يوم {arabicDays[new Date(currentYear, currentMonth - 1, selectedDate).getDay()]}
                                 </h3>
-                                <p className="text-slate-500 text-sm mt-0.5">
+                                <p className="text-slate-500 dark:text-gray-400 text-sm mt-0.5">
                                     {arabicMonths[currentMonth - 1]} {currentYear}
                                 </p>
                             </div>
@@ -236,8 +236,8 @@ const Schedule = () => {
                                     <div key={idx} className="group relative bg-white rounded-xl p-5 border border-slate-200 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
                                         <div className="absolute top-4 left-4">
                                             <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${schedule.shift_type === 'full' ? 'bg-purple-50 text-purple-700 border border-purple-100' :
-                                                    schedule.shift_type === 'day' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
-                                                        'bg-indigo-50 text-indigo-700 border border-indigo-100'
+                                                schedule.shift_type === 'day' ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                                                    'bg-indigo-50 text-indigo-700 border border-indigo-100'
                                                 }`}>
                                                 {schedule.shift_type === 'full' ? '24 ساعة' :
                                                     schedule.shift_type === 'day' ? 'نهاري' : 'ليلي'}

@@ -37,53 +37,57 @@ const Home = () => {
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900">
-            {/* Hero Section - Professional */}
-            <section className="relative overflow-hidden" style={{ background: 'linear-gradient(to bottom right, rgb(16,49,120), rgb(37,99,235), rgb(59,130,246))' }}>
-                {/* Background Pattern */}
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0" style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-                    }} />
+            {/* Hero Section - Premium Modern */}
+            <section className="relative overflow-hidden bg-slate-900">
+                {/* Abstract Background Effects */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {/* Main Glows */}
+                    <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[100px] animate-pulse-slow"></div>
+                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
                 </div>
+
+
 
                 <div className="container mx-auto px-4 py-24 md:py-32 relative z-10">
                     <div className="max-w-4xl mx-auto text-center">
                         {/* Status Badge */}
-                        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full mb-8">
-                            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                            <span className="text-white font-semibold text-sm">خدمة متاحة على مدار الساعة</span>
+                        <div className="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-md border border-slate-700/50 px-4 py-1.5 rounded-full mb-8 shadow-lg ring-1 ring-white/10">
+                            <span className="relative flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                            </span>
+                            <span className="text-slate-300 font-medium text-xs tracking-wide">خدمة على مدار 24 ساعة</span>
                         </div>
 
                         {/* Main Title */}
-                        <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
-                            صيدليات معرة النعمان<br />
-                            <span className="text-blue-200">المناوبة</span>
+                        <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight tracking-tight">
+                            صيدليات <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">معرة النعمان</span>
+                            <br />
+                            <span className="text-slate-200">المناوبة</span>
                         </h1>
 
-                        <p className="text-xl md:text-2xl text-blue-100 mb-12 leading-relaxed">
-                            ابحث عن أقرب صيدلية مناوبة بسهولة وسرعة
+                        <p className="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+                            المنصة الرسمية لمعرفة الصيدليات المناوبة وتوفر الأدوية في المدينة
+                            <br />
+                            <span className="text-slate-500 text-base">معلومات دقيقة • تحديث فوري • موقع دقيق</span>
                         </p>
 
                         {/* CTA Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link to="/pharmacies" className="px-8 py-4 bg-white text-blue-700 rounded-lg font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-xl hover:shadow-2xl">
-                                عرض جميع الصيدليات
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">
+                            <Link to="/pharmacies" className="group relative px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-sm sm:text-base transition-all duration-300 shadow-lg hover:shadow-blue-500/25 overflow-hidden">
+                                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                                <span className="relative">عرض جميع الصيدليات</span>
                             </Link>
-                            <Link to="/schedule" className="px-8 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white rounded-lg font-bold text-lg hover:bg-white/20 transition-all duration-300">
+                            <Link to="/schedule" className="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-slate-600 rounded-xl font-bold text-sm sm:text-base transition-all duration-300 backdrop-blur-sm">
                                 جدول المناوبات
                             </Link>
                         </div>
                     </div>
                 </div>
 
-                {/* Wave Divider */}
-                <div className="absolute bottom-0 left-0 right-0">
-                    <svg viewBox="0 0 1440 120" className="w-full h-auto" preserveAspectRatio="none">
-                        <path fill="currentColor" className="text-white dark:text-gray-900" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
-                    </svg>
-                </div>
             </section>
 
+            {/* Stats Section */}
             {/* Stats Section */}
             <section className="py-16 bg-gray-50 dark:bg-gray-800">
                 <div className="container mx-auto px-4">
@@ -142,7 +146,7 @@ const Home = () => {
                 </section>
             )}
 
-            {/* On Duty Today Section */}
+            {/* On Duty Today (Upcoming) Section */}
             <section className="py-20 bg-gray-50 dark:bg-gray-800">
                 <div className="container mx-auto px-4">
                     <div className="mb-12">
@@ -152,22 +156,24 @@ const Home = () => {
                         <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">المناوبات القادمة</h2>
                         <p className="text-lg text-gray-600 dark:text-gray-400">جدول المناوبات للأيام القادمة</p>
                     </div>
-                    {onDutyToday.length > 0 ? (
+                    {onDutyToday.filter(s => new Date(s.duty_date).toDateString() !== new Date().toDateString()).length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {onDutyToday.map(schedule => (
-                                <PharmacyCard
-                                    key={schedule.id}
-                                    pharmacy={schedule.pharmacy}
-                                    date={schedule.duty_date}
-                                    showSchedule={true}
-                                />
-                            ))}
+                            {onDutyToday
+                                .filter(s => new Date(s.duty_date).toDateString() !== new Date().toDateString())
+                                .map(schedule => (
+                                    <PharmacyCard
+                                        key={schedule.id}
+                                        pharmacy={schedule.pharmacy}
+                                        date={schedule.duty_date}
+                                        showSchedule={true}
+                                    />
+                                ))}
                         </div>
                     ) : (
                         <div className="text-center py-16">
                             <div className="inline-block p-12 bg-white dark:bg-gray-900 rounded-2xl shadow-lg">
-                                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">لا توجد صيدليات مناوبة اليوم</h3>
-                                <p className="text-gray-500 dark:text-gray-400">يرجى المحاولة لاحقاً</p>
+                                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">لا توجد مناوبات قادمة</h3>
+                                <p className="text-gray-500 dark:text-gray-400">يرجى التحقق لاحقاً</p>
                             </div>
                         </div>
                     )}
@@ -200,37 +206,46 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* CTA Section */}
-            <section className="pt-20 pb-32 relative overflow-hidden" style={{ background: 'linear-gradient(to bottom right, rgb(16,49,120), rgb(37,99,235), rgb(59,130,246))' }}>
-                {/* Background Pattern */}
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0" style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-                    }} />
+            {/* CTA Section - Premium Dark */}
+            <section className="pt-20 pb-32 relative overflow-hidden bg-slate-900">
+                {/* Abstract Background Effects */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] animate-pulse-slow"></div>
+                    <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-600/10 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
                 </div>
 
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <div className="max-w-4xl mx-auto">
-                        <h2 className="text-5xl md:text-6xl font-black text-white mb-8 leading-tight">ابحث عن صيدليتك الآن</h2>
-                        <p className="text-2xl text-blue-100 mb-12 leading-relaxed max-w-3xl mx-auto">جميع صيدليات معرة النعمان في مكان واحد - معلومات دقيقة ومحدثة على مدار الساعة</p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                            <Link to="/pharmacies" className="px-12 py-5 bg-white text-blue-700 rounded-lg font-bold text-xl hover:bg-blue-50 transition-all duration-300 shadow-2xl hover:shadow-3xl">عرض جميع الصيدليات</Link>
-                            <Link to="/schedule" className="px-12 py-5 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white rounded-lg font-bold text-xl hover:bg-white/20 transition-all duration-300">جدول المناوبات</Link>
+                        <h2 className="text-5xl md:text-6xl font-black text-white mb-8 leading-tight tracking-tight">
+                            ابحث عن <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">صيدليتك الآن</span>
+                        </h2>
+                        <p className="text-xl text-slate-400 mb-12 leading-relaxed max-w-3xl mx-auto">
+                            جميع صيدليات معرة النعمان في مكان واحد - معلومات دقيقة ومحدثة على مدار الساعة
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+                            <Link to="/pharmacies" className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-lg transition-all duration-300 shadow-xl hover:shadow-blue-500/25 overflow-hidden">
+                                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                                <span className="relative">عرض جميع الصيدليات</span>
+                            </Link>
+                            <Link to="/schedule" className="px-8 py-4 bg-slate-800/50 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-slate-600 rounded-xl font-bold text-lg transition-all duration-300 backdrop-blur-sm">
+                                جدول المناوبات
+                            </Link>
                         </div>
 
-                        {/* Additional Info */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-                            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                        {/* Additional Info Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="bg-slate-800/30 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 hover:bg-slate-800/50 transition-colors duration-300">
                                 <div className="text-4xl font-black text-white mb-2">24/7</div>
-                                <div className="text-blue-100">خدمة متواصلة</div>
+                                <div className="text-slate-400 font-medium">خدمة متواصلة</div>
                             </div>
-                            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                            <div className="bg-slate-800/30 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 hover:bg-slate-800/50 transition-colors duration-300">
                                 <div className="text-4xl font-black text-white mb-2">6</div>
-                                <div className="text-blue-100">أحياء مغطاة</div>
+                                <div className="text-slate-400 font-medium">أحياء مغطاة</div>
                             </div>
-                            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                            <div className="bg-slate-800/30 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 hover:bg-slate-800/50 transition-colors duration-300">
                                 <div className="text-4xl font-black text-white mb-2">5+</div>
-                                <div className="text-blue-100">صيدليات متوفرة</div>
+                                <div className="text-slate-400 font-medium">صيدليات متوفرة</div>
                             </div>
                         </div>
                     </div>

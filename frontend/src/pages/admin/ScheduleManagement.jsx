@@ -22,7 +22,7 @@ const ScheduleManagement = () => {
         <div className="flex min-h-screen bg-gray-50">
             <Sidebar />
 
-            <div className="flex-1 mr-80 p-8">
+            <div className="flex-1 lg:mr-80 p-4 lg:p-8">
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold text-gray-900 mb-2">إدارة المناوبات</h1>
                     <p className="text-gray-600">جدولة وإدارة المناوبات اليومية للصيدليات</p>
@@ -87,8 +87,8 @@ const ScheduleManagement = () => {
                                         <td className="px-6 py-4 text-gray-900">{schedule.pharmacy}</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${schedule.shift === 'نهاري'
-                                                    ? 'bg-yellow-100 text-yellow-800'
-                                                    : 'bg-blue-100 text-blue-800'
+                                                ? 'bg-yellow-100 text-yellow-800'
+                                                : 'bg-blue-100 text-blue-800'
                                                 }`}>
                                                 {schedule.shift}
                                             </span>

@@ -39,6 +39,8 @@ class AuthController extends Controller
             'phone' => ['required', 'string', 'max:20', new SyrianPhoneRule()],
             'address' => 'required|string|min:10|max:500',
             'neighborhood_id' => 'required|exists:neighborhoods,id',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
         ], [
             'name.required' => 'الاسم مطلوب',
             'name.min' => 'الاسم يجب أن يكون 3 أحرف على الأقل',
@@ -125,6 +127,8 @@ class AuthController extends Controller
                 'phone' => $cleanPhone,
                 'address' => $cleanAddress,
                 'neighborhood_id' => $request->neighborhood_id,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
                 'is_active' => true,
                 'is_approved' => $isApproved,
             ]);

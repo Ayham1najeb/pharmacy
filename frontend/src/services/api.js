@@ -18,7 +18,9 @@ class ApiService {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || 'حدث خطأ في الاتصال');
+                const error = new Error(data.message || 'حدث خطأ في الاتصال');
+                error.response = { data, status: response.status };
+                throw error;
             }
 
             return data;

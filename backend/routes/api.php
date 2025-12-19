@@ -120,5 +120,8 @@ Route::prefix('v1/admin')->group(function () {
         // User Management
         Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index']);
         Route::delete('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy']);
+
+        // Profile Management
+        Route::put('/profile/password', [App\Http\Controllers\Admin\ProfileController::class, 'updatePassword']);
     });
 });

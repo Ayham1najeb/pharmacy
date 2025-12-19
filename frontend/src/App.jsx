@@ -36,6 +36,7 @@ import { usePageTracking } from './hooks/usePageTracking';
 function AppContent() {
   const { theme } = useTheme();
   const location = useLocation();
+  usePageTracking();
 
   useEffect(() => {
     // Apply dark mode class to html element
@@ -60,6 +61,7 @@ function AppContent() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<AdminLogin />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/map" element={<Map />} />
           <Route path="/pharmacies" element={<AllPharmacies />} />

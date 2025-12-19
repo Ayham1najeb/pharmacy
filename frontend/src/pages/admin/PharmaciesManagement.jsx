@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../../components/admin/Sidebar';
+import PharmacyFormModal from '../../components/admin/PharmacyFormModal';
 
 const PharmaciesManagement = () => {
     const [pharmacies, setPharmacies] = useState([]);
     const [filter, setFilter] = useState('all'); // all, pending, approved
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+
+    // Modal State
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingPharmacy, setEditingPharmacy] = useState(null);
 
     useEffect(() => {
         fetchPharmacies();
@@ -46,16 +51,29 @@ const PharmaciesManagement = () => {
         }
     };
 
-    const handleReject = async (id) => {
-        if (!confirm('هل أنت متأكد من رفض هذه الصيدلية؟ سيتم حذفها نهائياً.')) return;
+    const handleDelete = async (id) => {
+        if (!confirm('هل أنت متأكد من حذف هذه الصيدلية؟ سيتم إزالتها نهائياً من النظام.')) return;
 
         try {
-            await axios.patch(`/api/v1/admin/pharmacies/${id}/reject`);
-            alert('تم الرفض والحذف بنجاح');
+            await axios.delete(`/api/v1/admin/pharmacies/${id}`);
+            alert('تم الحذف بنجاح');
             fetchPharmacies();
         } catch (error) {
-            alert('حدث خطأ أثناء الرفض');
+            alert('حدث خطأ أثناء الحذف');
         }
+    };
+
+    // Kept for backward compatibility if needed, but redirects to delete
+    const handleReject = (id) => handleDelete(id);
+
+    const openAddModal = () => {
+        setEditingPharmacy(null);
+        setIsModalOpen(true);
+    };
+
+    const openEditModal = (pharmacy) => {
+        setEditingPharmacy(pharmacy);
+        setIsModalOpen(true);
     };
 
     const filteredPharmacies = pharmacies.filter(pharmacy =>
@@ -67,11 +85,20 @@ const PharmaciesManagement = () => {
         <div className="flex min-h-screen bg-gray-50">
             <Sidebar />
 
-            <div className="flex-1 mr-80 p-8">
+            <div className="flex-1 lg:mr-80 p-4 lg:p-8">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold text-gray-900 mb-2">إدارة الصيدليات</h1>
-                    <p className="text-gray-600">عرض وإدارة جميع الصيدليات والموافقة على الطلبات</p>
+                <div className="mb-8 flex justify-between items-end">
+                    <div>
+                        <h1 className="text-4xl font-bold text-gray-900 mb-2">إدارة الصيدليات</h1>
+                        <p className="text-gray-600">عرض وإدارة جميع الصيدليات والموافقة على الطلبات</p>
+                    </div>
+                    <button
+                        onClick={openAddModal}
+                        className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg transition-transform hover:scale-105 flex items-center gap-2"
+                    >
+                        <span className="text-xl">+</span>
+                        إضافة صيدلية
+                    </button>
                 </div>
 
                 {/* Filters and Search */}
@@ -132,63 +159,92 @@ const PharmaciesManagement = () => {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredPharmacies.map((pharmacy) => (
-                            <div key={pharmacy.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow p-6 border-t-4 border-blue-500">
-                                <div className="flex items-start justify-between mb-4">
-                                    <div>
-                                        <h3 className="text-xl font-bold text-gray-900 mb-1">{pharmacy.name}</h3>
-                                        <p className="text-sm text-gray-600">{pharmacy.owner_name}</p>
+                            <div key={pharmacy.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow p-6 border-t-4 border-blue-500 flex flex-col justify-between">
+                                <div>
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div>
+                                            <h3 className="text-xl font-bold text-gray-900 mb-1">{pharmacy.name}</h3>
+                                            <p className="text-sm text-gray-600">{pharmacy.owner_name}</p>
+                                        </div>
+                                        {!pharmacy.is_approved && (
+                                            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">
+                                                قيد الانتظار
+                                            </span>
+                                        )}
+                                        {pharmacy.is_approved && (
+                                            <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
+                                                موافق عليها
+                                            </span>
+                                        )}
                                     </div>
-                                    {!pharmacy.is_approved && (
-                                        <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">
-                                            قيد الانتظار
-                                        </span>
-                                    )}
-                                    {pharmacy.is_approved && (
-                                        <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
-                                            موافق عليها
-                                        </span>
-                                    )}
+
+                                    <div className="space-y-2 mb-4">
+                                        <div className="flex items-center gap-2 text-sm">
+                                            <span className="text-gray-500">📞</span>
+                                            <span className="text-gray-700">{pharmacy.phone}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-sm">
+                                            <span className="text-gray-500">📍</span>
+                                            <span className="text-gray-700 truncate" title={pharmacy.address}>{pharmacy.address}</span>
+                                        </div>
+                                        {pharmacy.neighborhood && (
+                                            <div className="flex items-center gap-2 text-sm">
+                                                <span className="text-gray-500">🏘️</span>
+                                                <span className="text-gray-700">{pharmacy.neighborhood.name}</span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
 
-                                <div className="space-y-2 mb-4">
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <span className="text-gray-500">📞</span>
-                                        <span className="text-gray-700">{pharmacy.phone}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <span className="text-gray-500">📍</span>
-                                        <span className="text-gray-700">{pharmacy.address}</span>
-                                    </div>
-                                    {pharmacy.neighborhood && (
-                                        <div className="flex items-center gap-2 text-sm">
-                                            <span className="text-gray-500">🏘️</span>
-                                            <span className="text-gray-700">{pharmacy.neighborhood.name}</span>
+                                <div className="space-y-2 mt-4 pt-4 border-t border-gray-100">
+                                    {!pharmacy.is_approved ? (
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => handleApprove(pharmacy.id)}
+                                                className="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors text-sm"
+                                            >
+                                                ✓ موافقة
+                                            </button>
+                                            <button
+                                                onClick={() => handleReject(pharmacy.id)}
+                                                className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors text-sm"
+                                            >
+                                                ✕ رفض
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => openEditModal(pharmacy)}
+                                                className="flex-1 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg font-semibold transition-colors text-sm border border-blue-200"
+                                            >
+                                                ✏️ تعديل
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(pharmacy.id)}
+                                                className="flex-1 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg font-semibold transition-colors text-sm border border-red-200"
+                                            >
+                                                🗑️ حذف
+                                            </button>
                                         </div>
                                     )}
                                 </div>
-
-                                {!pharmacy.is_approved && (
-                                    <div className="flex gap-2">
-                                        <button
-                                            onClick={() => handleApprove(pharmacy.id)}
-                                            className="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors text-sm"
-                                        >
-                                            ✓ موافقة
-                                        </button>
-                                        <button
-                                            onClick={() => handleReject(pharmacy.id)}
-                                            className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors text-sm"
-                                        >
-                                            ✕ رفض
-                                        </button>
-                                    </div>
-                                )}
                             </div>
                         ))}
                     </div>
                 )}
             </div>
-        </div>
+
+            {/* CRUD Modal */}
+            <PharmacyFormModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                pharmacy={editingPharmacy}
+                onSuccess={() => {
+                    fetchPharmacies();
+                }}
+            />
+        </div >
     );
 };
 

@@ -64,11 +64,11 @@ class PharmacyController extends Controller
         $pharmacy = Pharmacy::create($request->all());
 
         // Log activity
-        activity()
-            ->causedBy($request->user())
-            ->performedOn($pharmacy)
-            ->withProperties(['attributes' => $pharmacy->toArray()])
-            ->log('Created pharmacy');
+        // Log activity
+        \Illuminate\Support\Facades\Log::info('Created pharmacy', [
+            'user_id' => $request->user()->id,
+            'pharmacy_id' => $pharmacy->id
+        ]);
 
         return response()->json($pharmacy, 201);
     }
@@ -112,14 +112,11 @@ class PharmacyController extends Controller
         $pharmacy->update($request->all());
 
         // Log activity
-        activity()
-            ->causedBy($request->user())
-            ->performedOn($pharmacy)
-            ->withProperties([
-                'old' => $oldValues,
-                'attributes' => $pharmacy->fresh()->toArray()
-            ])
-            ->log('Updated pharmacy');
+        // Log activity
+        \Illuminate\Support\Facades\Log::info('Updated pharmacy', [
+            'user_id' => $request->user()->id,
+            'pharmacy_id' => $pharmacy->id
+        ]);
 
         return response()->json($pharmacy);
     }
@@ -133,10 +130,11 @@ class PharmacyController extends Controller
         $pharmacy->delete();
 
         // Log activity
-        activity()
-            ->causedBy($request->user())
-            ->performedOn($pharmacy)
-            ->log('Deleted pharmacy');
+        // Log activity
+        \Illuminate\Support\Facades\Log::info('Deleted pharmacy', [
+            'user_id' => $request->user()->id,
+            'pharmacy_id' => $id
+        ]);
 
         return response()->json(['message' => 'Pharmacy deleted successfully']);
     }
@@ -152,14 +150,12 @@ class PharmacyController extends Controller
         $pharmacy->save();
 
         // Log activity
-        activity()
-            ->causedBy($request->user())
-            ->performedOn($pharmacy)
-            ->withProperties([
-                'old_status' => $oldStatus,
-                'new_status' => $pharmacy->is_active
-            ])
-            ->log('Toggled pharmacy status');
+        // Log activity
+        \Illuminate\Support\Facades\Log::info('Toggled pharmacy status', [
+            'user_id' => $request->user()->id,
+            'pharmacy_id' => $pharmacy->id,
+            'new_status' => $pharmacy->is_active
+        ]);
 
         return response()->json($pharmacy);
     }
@@ -188,10 +184,11 @@ class PharmacyController extends Controller
         $pharmacy->save();
 
         // Log activity
-        activity()
-            ->causedBy($request->user())
-            ->performedOn($pharmacy)
-            ->log('Approved pharmacy');
+        // Log activity
+        \Illuminate\Support\Facades\Log::info('Approved pharmacy', [
+            'user_id' => $request->user()->id,
+            'pharmacy_id' => $pharmacy->id
+        ]);
 
         return response()->json([
             'success' => true,
@@ -216,9 +213,11 @@ class PharmacyController extends Controller
         }
 
         // Log activity
-        activity()
-            ->causedBy($request->user())
-            ->log('Rejected and deleted pharmacy: ' . $pharmacy->name);
+        // Log activity
+        \Illuminate\Support\Facades\Log::info('Rejected and deleted pharmacy', [
+            'user_id' => $request->user()->id,
+            'pharmacy_name' => $pharmacy->name
+        ]);
 
         return response()->json([
             'success' => true,

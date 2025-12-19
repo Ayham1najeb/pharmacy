@@ -34,7 +34,7 @@ const Header = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
                         </div>
-                        <span className="text-lg font-bold text-gray-800 dark:text-white hidden sm:block">
+                        <span className="text-xl font-bold text-gray-800 dark:text-white hidden sm:block">
                             صيدليات معرة النعمان
                         </span>
                     </Link>
@@ -43,31 +43,31 @@ const Header = () => {
                     <nav className="hidden lg:flex items-center gap-6">
                         <Link
                             to="/"
-                            className={`text-sm font-medium transition-colors ${isActive('/') ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'}`}
+                            className={`text-base font-medium transition-colors ${isActive('/') ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'}`}
                         >
                             الرئيسية
                         </Link>
                         <Link
                             to="/schedule"
-                            className={`text-sm font-medium transition-colors ${isActive('/schedule') ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'}`}
+                            className={`text-base font-medium transition-colors ${isActive('/schedule') ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'}`}
                         >
                             جدول المناوبات
                         </Link>
                         <Link
                             to="/map"
-                            className={`text-sm font-medium transition-colors ${isActive('/map') ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'}`}
+                            className={`text-base font-medium transition-colors ${isActive('/map') ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'}`}
                         >
                             الخريطة
                         </Link>
                         <Link
                             to="/pharmacies"
-                            className={`text-sm font-medium transition-colors ${isActive('/pharmacies') ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'}`}
+                            className={`text-base font-medium transition-colors ${isActive('/pharmacies') ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'}`}
                         >
                             الصيدليات
                         </Link>
                         <Link
                             to="/about"
-                            className={`text-sm font-medium transition-colors ${isActive('/about') ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'}`}
+                            className={`text-base font-medium transition-colors ${isActive('/about') ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'}`}
                         >
                             من نحن
                         </Link>
@@ -80,13 +80,13 @@ const Header = () => {
                             <div className="hidden lg:flex items-center gap-2">
                                 <Link
                                     to={getDashboardLink()}
-                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-base font-medium rounded-lg transition-colors"
                                 >
                                     لوحة التحكم
                                 </Link>
                                 <button
                                     onClick={handleLogout}
-                                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors"
+                                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-base font-medium rounded-lg transition-colors"
                                 >
                                     خروج
                                 </button>
@@ -95,13 +95,13 @@ const Header = () => {
                             <div className="hidden lg:flex items-center gap-2">
                                 <Link
                                     to="/register"
-                                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors"
+                                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-base font-medium rounded-lg transition-colors"
                                 >
                                     تسجيل صيدلية
                                 </Link>
                                 <Link
                                     to="/admin/login"
-                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-base font-medium rounded-lg transition-colors"
                                 >
                                     دخول
                                 </Link>
@@ -150,35 +150,35 @@ const Header = () => {
                             <Link
                                 to="/"
                                 onClick={() => setIsMenuOpen(false)}
-                                className={`px-4 py-3 rounded-lg text-sm font-medium ${isActive('/') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                className={`px-4 py-3 rounded-lg text-base font-medium ${isActive('/') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                             >
                                 الرئيسية
                             </Link>
                             <Link
                                 to="/schedule"
                                 onClick={() => setIsMenuOpen(false)}
-                                className={`px-4 py-3 rounded-lg text-sm font-medium ${isActive('/schedule') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                className={`px-4 py-3 rounded-lg text-base font-medium ${isActive('/schedule') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                             >
                                 جدول المناوبات
                             </Link>
                             <Link
                                 to="/map"
                                 onClick={() => setIsMenuOpen(false)}
-                                className={`px-4 py-3 rounded-lg text-sm font-medium ${isActive('/map') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                className={`px-4 py-3 rounded-lg text-base font-medium ${isActive('/map') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                             >
                                 الخريطة
                             </Link>
                             <Link
                                 to="/pharmacies"
                                 onClick={() => setIsMenuOpen(false)}
-                                className={`px-4 py-3 rounded-lg text-sm font-medium ${isActive('/pharmacies') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                className={`px-4 py-3 rounded-lg text-base font-medium ${isActive('/pharmacies') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                             >
                                 الصيدليات
                             </Link>
                             <Link
                                 to="/about"
                                 onClick={() => setIsMenuOpen(false)}
-                                className={`px-4 py-3 rounded-lg text-sm font-medium ${isActive('/about') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                className={`px-4 py-3 rounded-lg text-base font-medium ${isActive('/about') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                             >
                                 من نحن
                             </Link>
@@ -190,13 +190,13 @@ const Header = () => {
                                         <Link
                                             to={getDashboardLink()}
                                             onClick={() => setIsMenuOpen(false)}
-                                            className="px-4 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg text-center"
+                                            className="px-4 py-3 bg-blue-600 text-white text-base font-medium rounded-lg text-center"
                                         >
                                             لوحة التحكم
                                         </Link>
                                         <button
                                             onClick={() => { handleLogout(); setIsMenuOpen(false); }}
-                                            className="px-4 py-3 bg-red-500 text-white text-sm font-medium rounded-lg"
+                                            className="px-4 py-3 bg-red-500 text-white text-base font-medium rounded-lg"
                                         >
                                             تسجيل الخروج
                                         </button>
@@ -206,14 +206,14 @@ const Header = () => {
                                         <Link
                                             to="/register"
                                             onClick={() => setIsMenuOpen(false)}
-                                            className="px-4 py-3 bg-green-600 text-white text-sm font-medium rounded-lg text-center"
+                                            className="px-4 py-3 bg-green-600 text-white text-base font-medium rounded-lg text-center"
                                         >
                                             تسجيل صيدلية
                                         </Link>
                                         <Link
                                             to="/admin/login"
                                             onClick={() => setIsMenuOpen(false)}
-                                            className="px-4 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg text-center"
+                                            className="px-4 py-3 bg-blue-600 text-white text-base font-medium rounded-lg text-center"
                                         >
                                             تسجيل الدخول
                                         </Link>

@@ -22,7 +22,10 @@ class NeighborhoodSeeder extends Seeder
         ];
 
         foreach ($neighborhoods as $neighborhood) {
-            Neighborhood::create($neighborhood);
+            Neighborhood::firstOrCreate(
+                ['name' => $neighborhood['name']],
+                ['area_code' => $neighborhood['area_code']]
+            );
         }
     }
 }

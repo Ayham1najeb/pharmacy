@@ -68,7 +68,7 @@ const Dashboard = () => {
         <div className="flex min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
             <Sidebar />
 
-            <div className="flex-1 mr-80 p-8">
+            <div className="flex-1 lg:mr-80 p-4 lg:p-8">
                 {/* Welcome Header */}
                 <div className="mb-8">
                     <h1 className="text-5xl font-black text-gray-900 mb-2">

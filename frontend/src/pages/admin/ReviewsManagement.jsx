@@ -25,7 +25,7 @@ const ReviewsManagement = () => {
         <div className="flex min-h-screen bg-gray-50">
             <Sidebar />
 
-            <div className="flex-1 mr-80 p-8">
+            <div className="flex-1 lg:mr-80 p-4 lg:p-8">
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold text-gray-900 mb-2">إدارة التقييمات</h1>
                     <p className="text-gray-600">مراجعة والموافقة على تقييمات المستخدمين</p>

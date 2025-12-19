@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
@@ -57,6 +58,12 @@ const Login = () => {
                     <h2 className="text-xl font-semibold text-gray-800 mb-6 text-center">
                         تسجيل الدخول
                     </h2>
+
+                    {location.state?.successMessage && (
+                        <div className="bg-green-50 text-green-600 p-3 rounded-lg mb-5 text-center text-sm border border-green-200">
+                            {location.state.successMessage}
+                        </div>
+                    )}
 
                     {error && (
                         <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-5 text-center text-sm">

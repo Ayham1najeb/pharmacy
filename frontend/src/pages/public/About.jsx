@@ -2,7 +2,7 @@ import React from 'react';
 
 const About = () => {
     return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
+        <div className="min-h-screen bg-slate-50 dark:bg-gray-900 font-sans text-slate-900 dark:text-white">
             {/* Hero Section */}
             <div className="bg-slate-900 text-white py-24 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -20,52 +20,52 @@ const About = () => {
 
             <div className="container mx-auto px-4 py-16 max-w-6xl -mt-16 relative z-10">
                 {/* Vision Card */}
-                <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 p-10 border border-slate-100 mb-20 text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl text-3xl mb-6 shadow-sm border border-blue-100">👁️</div>
-                    <h2 className="text-3xl font-bold text-slate-900 mb-6">رؤيتنا</h2>
-                    <p className="text-xl text-slate-600 leading-relaxed max-w-4xl mx-auto mb-12 font-light">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none p-10 border border-slate-100 dark:border-gray-700 mb-20 text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl text-3xl mb-6 shadow-sm border border-blue-100 dark:border-blue-800">👁️</div>
+                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-6">رؤيتنا</h2>
+                    <p className="text-xl text-slate-600 dark:text-gray-400 leading-relaxed max-w-4xl mx-auto mb-12 font-light">
                         أن نكون المرجع الأول والموثوق للمعلومات الصحية في المنطقة، مسخرين التقنية لخدمة المجتمع وتوفير الوقت والجهد على المرضى وذويهم.
                     </p>
 
-                    <div className="grid md:grid-cols-3 gap-8 border-t border-slate-100 pt-10">
+                    <div className="grid md:grid-cols-3 gap-8 border-t border-slate-100 dark:border-gray-700 pt-10">
                         <div className="text-center group">
-                            <div className="text-4xl font-black text-blue-600 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">24/7</div>
-                            <p className="text-slate-500 font-medium">خدمة متواصلة</p>
+                            <div className="text-4xl font-black text-blue-600 dark:text-blue-400 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">24/7</div>
+                            <p className="text-slate-500 dark:text-gray-400 font-medium">خدمة متواصلة</p>
                         </div>
-                        <div className="text-center md:border-x border-slate-100 group">
-                            <div className="text-4xl font-black text-emerald-500 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">100%</div>
-                            <p className="text-slate-500 font-medium">دقة وموثوقية</p>
+                        <div className="text-center md:border-x border-slate-100 dark:border-gray-700 group">
+                            <div className="text-4xl font-black text-emerald-500 dark:text-emerald-400 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">100%</div>
+                            <p className="text-slate-500 dark:text-gray-400 font-medium">دقة وموثوقية</p>
                         </div>
                         <div className="text-center group">
-                            <div className="text-4xl font-black text-slate-700 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">مجاناً</div>
-                            <p className="text-slate-500 font-medium">خدمة عامة</p>
+                            <div className="text-4xl font-black text-slate-700 dark:text-gray-300 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">مجاناً</div>
+                            <p className="text-slate-500 dark:text-gray-400 font-medium">خدمة عامة</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Goals Grid */}
                 <section className="mb-24">
-                    <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">قيمنا وأهدافنا</h2>
+                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-12 text-center">قيمنا وأهدافنا</h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:border-blue-200 hover:shadow-md transition-all group">
-                            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform border border-blue-100">🎯</div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">سهولة الوصول</h3>
-                            <p className="text-slate-500 text-sm leading-relaxed">توفير المعلومة الصحيحة في الوقت المناسب وبأقل جهد ممكن.</p>
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm border border-slate-200 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-700 hover:shadow-md transition-all group">
+                            <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform border border-blue-100 dark:border-blue-800">🎯</div>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">سهولة الوصول</h3>
+                            <p className="text-slate-500 dark:text-gray-400 text-sm leading-relaxed">توفير المعلومة الصحيحة في الوقت المناسب وبأقل جهد ممكن.</p>
                         </div>
-                        <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:border-emerald-200 hover:shadow-md transition-all group">
-                            <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform border border-emerald-100">⏰</div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">توفير الوقت</h3>
-                            <p className="text-slate-500 text-sm leading-relaxed">تقليل عناء البحث والتنقل بين الصيدليات، خاصة في الحالات الطارئة.</p>
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm border border-slate-200 dark:border-gray-700 hover:border-emerald-200 dark:hover:border-emerald-700 hover:shadow-md transition-all group">
+                            <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform border border-emerald-100 dark:border-emerald-800">⏰</div>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">توفير الوقت</h3>
+                            <p className="text-slate-500 dark:text-gray-400 text-sm leading-relaxed">تقليل عناء البحث والتنقل بين الصيدليات، خاصة في الحالات الطارئة.</p>
                         </div>
-                        <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:border-purple-200 hover:shadow-md transition-all group">
-                            <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform border border-purple-100">💡</div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">الابتكار</h3>
-                            <p className="text-slate-500 text-sm leading-relaxed">توظيف التكنولوجيا الحديثة لتقديم حلول عملية لمشاكل يومية.</p>
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm border border-slate-200 dark:border-gray-700 hover:border-purple-200 dark:hover:border-purple-700 hover:shadow-md transition-all group">
+                            <div className="w-12 h-12 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform border border-purple-100 dark:border-purple-800">💡</div>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">الابتكار</h3>
+                            <p className="text-slate-500 dark:text-gray-400 text-sm leading-relaxed">توظيف التكنولوجيا الحديثة لتقديم حلول عملية لمشاكل يومية.</p>
                         </div>
-                        <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:border-amber-200 hover:shadow-md transition-all group">
-                            <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform border border-amber-100">🤝</div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">المسؤولية</h3>
-                            <p className="text-slate-500 text-sm leading-relaxed">الالتزام بخدمة المجتمع بكل أمانة وشفافية.</p>
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm border border-slate-200 dark:border-gray-700 hover:border-amber-200 dark:hover:border-amber-700 hover:shadow-md transition-all group">
+                            <div className="w-12 h-12 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform border border-amber-100 dark:border-amber-800">🤝</div>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">المسؤولية</h3>
+                            <p className="text-slate-500 dark:text-gray-400 text-sm leading-relaxed">الالتزام بخدمة المجتمع بكل أمانة وشفافية.</p>
                         </div>
                     </div>
                 </section>

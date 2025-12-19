@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Sidebar from '../../components/admin/Sidebar';
 
 const Settings = () => {
@@ -17,15 +18,41 @@ const Settings = () => {
         setSettings(prev => ({ ...prev, [key]: value }));
     };
 
-    const handleSave = () => {
-        alert('تم حفظ الإعدادات بنجاح!');
+    const handleSave = async () => {
+        try {
+            // Save general settings (mock)
+            // In real app, this would be another API call
+
+            // Check if password change is requested
+            if (settings.current_password && settings.new_password) {
+                await axios.put('/api/v1/admin/profile/password', {
+                    current_password: settings.current_password,
+                    password: settings.new_password,
+                    password_confirmation: settings.new_password_confirmation,
+                });
+                alert('تم حفظ الإعدادات وتغيير كلمة المرور بنجاح!');
+                // Clear password fields
+                setSettings(prev => ({
+                    ...prev,
+                    current_password: '',
+                    new_password: '',
+                    new_password_confirmation: ''
+                }));
+            } else {
+                alert('تم حفظ الإعدادات بنجاح!');
+            }
+        } catch (error) {
+            console.error('Error saving settings:', error);
+            const message = error.response?.data?.message || 'حدث خطأ أثناء حفظ الإعدادات';
+            alert(message);
+        }
     };
 
     return (
         <div className="flex min-h-screen bg-gray-50">
             <Sidebar />
 
-            <div className="flex-1 mr-80 p-8">
+            <div className="flex-1 lg:mr-80 p-4 lg:p-8">
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold text-gray-900 mb-2">الإعدادات</h1>
                     <p className="text-gray-600">إدارة إعدادات النظام والتكوين</p>
@@ -143,6 +170,41 @@ const Settings = () => {
                                     />
                                     <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:right-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-red-600"></div>
                                 </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {/* Security Settings */}
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6">إعدادات الأمان</h2>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">كلمة المرور الحالية</label>
+                                <input
+                                    type="password"
+                                    value={settings.current_password || ''}
+                                    onChange={(e) => handleChange('current_password', e.target.value)}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">كلمة المرور الجديدة</label>
+                                <input
+                                    type="password"
+                                    value={settings.new_password || ''}
+                                    onChange={(e) => handleChange('new_password', e.target.value)}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">تأكيد كلمة المرور الجديدة</label>
+                                <input
+                                    type="password"
+                                    value={settings.new_password_confirmation || ''}
+                                    onChange={(e) => handleChange('new_password_confirmation', e.target.value)}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
                             </div>
                         </div>
                     </div>

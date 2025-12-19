@@ -52,6 +52,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/auth/logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
         Route::get('/auth/me', [App\Http\Controllers\Api\AuthController::class, 'me']);
     });
+    
+    // Health check for Render
+    Route::get('/health', function () {
+        return response()->json(['status' => 'ok', 'timestamp' => now()]);
+    });
 });
 
 // Pharmacist API Routes (v1)

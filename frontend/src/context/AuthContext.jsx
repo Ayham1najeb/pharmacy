@@ -1,6 +1,8 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -28,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/v1/auth/me', {
+            const response = await axios.get(`${API_BASE}/api/v1/auth/me`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -46,7 +48,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const response = await axios.post('http://localhost:8000/api/v1/auth/login', {
+            const response = await axios.post(`${API_BASE}/api/v1/auth/login`, {
                 email,
                 password
             });
@@ -67,7 +69,7 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             if (token) {
-                await axios.post('http://localhost:8000/api/v1/auth/logout', {}, {
+                await axios.post(`${API_BASE}/api/v1/auth/logout`, {}, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             }

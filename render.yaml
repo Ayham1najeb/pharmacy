@@ -1,0 +1,63 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: maarrat-pharmacy-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    env: docker
+    plan: free
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: APP_NAME
+        value: "Maarrat Pharmacy"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        value: https://maarrat-pharmacy-api.onrender.com
+      - key: FRONTEND_URL
+        value: https://maarrat-pharmacy.onrender.com
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pharmacy-db
+          property: connectionString
+      - key: SESSION_DRIVER
+        value: cookie
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: LOG_CHANNEL
+        value: stderr
+
+  # Frontend Static Site
+  - type: web
+    name: maarrat-pharmacy
+    runtime: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    pullRequestPreviewsEnabled: false
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://maarrat-pharmacy-api.onrender.com
+
+# Database
+databases:
+  - name: pharmacy-db
+    databaseName: pharmacy
+    user: pharmacy_user
+    plan: free

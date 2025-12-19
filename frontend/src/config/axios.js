@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Set base URL
-axios.defaults.baseURL = 'http://localhost:8000';
+// Set base URL from environment variable
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 // Add request interceptor to include token
 axios.interceptors.request.use(

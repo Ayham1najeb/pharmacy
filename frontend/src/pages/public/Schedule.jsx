@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 const Schedule = () => {
     const [schedules, setSchedules] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -24,7 +26,7 @@ const Schedule = () => {
         setLoading(true);
         try {
             const response = await axios.get(
-                `http://localhost:8000/api/v1/schedule/calendar/${currentMonth}/${currentYear}`
+                `${API_BASE}/api/v1/schedule/calendar/${currentMonth}/${currentYear}`
             );
             // API returns object grouped by date like { "2024-12-10": [...], "2024-12-11": [...] }
             if (response.data && typeof response.data === 'object') {
@@ -36,7 +38,7 @@ const Schedule = () => {
             console.error('Error fetching schedules:', error);
             // Try alternative endpoint
             try {
-                const response = await axios.get('http://localhost:8000/api/v1/schedule');
+                const response = await axios.get(`${API_BASE}/api/v1/schedule`);
                 // This returns an array, convert to object
                 if (Array.isArray(response.data)) {
                     const grouped = {};

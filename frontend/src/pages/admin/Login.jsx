@@ -137,13 +137,7 @@ const Login = () => {
                         تسجيل صيدلية جديدة
                     </Link>
 
-                    {/* Demo Credentials */}
-                    <div className="mt-5 p-3 bg-gray-50 rounded-xl">
-                        <p className="text-xs text-center text-gray-500">
-                            <span className="font-semibold text-gray-600">للتجربة:</span>{' '}
-                            admin@test.com / admin123
-                        </p>
-                    </div>
+
                 </div>
 
                 {/* Back to Home */}

@@ -23,7 +23,7 @@ services:
         value: https://maarrat-pharmacy.onrender.com
       - key: DB_CONNECTION
         value: pgsql
-      - key: DATABASE_URL
+      - key: DB_URL
         value: "postgresql://postgres.uomxyrgyptosckdwlqvu:WRsToejmpfAaFlcx@aws-1-eu-west-1.pooler.supabase.com:5432/postgres"
       - key: SESSION_DRIVER
         value: cookie

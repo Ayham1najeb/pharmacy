@@ -100,7 +100,7 @@ const Header = () => {
                                     تسجيل صيدلية
                                 </Link>
                                 <Link
-                                    to="/admin/login"
+                                    to="/login"
                                     className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-base font-medium rounded-lg transition-colors"
                                 >
                                     دخول
@@ -211,7 +211,7 @@ const Header = () => {
                                             تسجيل صيدلية
                                         </Link>
                                         <Link
-                                            to="/admin/login"
+                                            to="/login"
                                             onClick={() => setIsMenuOpen(false)}
                                             className="px-4 py-3 bg-blue-600 text-white text-base font-medium rounded-lg text-center"
                                         >

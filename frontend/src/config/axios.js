@@ -25,7 +25,7 @@ axios.interceptors.response.use(
             // Unauthorized - clear token and redirect to login
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.href = '/admin/login';
+            window.location.href = '/login';
         }
         return Promise.reject(error);
     }

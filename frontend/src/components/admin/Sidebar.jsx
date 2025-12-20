@@ -10,7 +10,7 @@ const Sidebar = () => {
 
     const handleLogout = async () => {
         await logout();
-        navigate('/admin/login');
+        navigate('/login');
     };
 
     const menuItems = [

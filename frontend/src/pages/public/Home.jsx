@@ -53,7 +53,7 @@ const Home = () => {
 
 
 
-                <div className="container mx-auto px-4 py-16 md:py-32 relative z-10">
+                <div className="container mx-auto px-4 py-16 pb-20 md:py-32 relative z-10">
                     <div className="max-w-4xl mx-auto text-center">
                         {/* Status Badge */}
                         <div className="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-md border border-slate-700/50 px-4 py-1.5 rounded-full mb-6 md:mb-8 mt-4 md:mt-0 shadow-lg ring-1 ring-white/10">

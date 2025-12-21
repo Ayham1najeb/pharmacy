@@ -71,14 +71,14 @@ const Home = () => {
                             <span className="text-slate-200">المناوبة</span>
                         </h1>
 
-                        <p className="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+                        <p className="text-lg md:text-xl text-slate-400 mb-6 md:mb-10 leading-relaxed max-w-2xl mx-auto">
                             المنصة الرسمية لمعرفة الصيدليات المناوبة وتوفر الأدوية في المدينة
                             <br />
                             <span className="text-slate-500 text-base">معلومات دقيقة • تحديث فوري • موقع دقيق</span>
                         </p>
 
                         {/* CTA Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4 sm:px-0 -mt-2 md:mt-0">
+                        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4 sm:px-0 -mt-4 md:mt-0">
                             <Link to="/pharmacies" className="group relative px-6 py-3.5 md:py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-base transition-all duration-300 shadow-lg hover:shadow-blue-500/25 overflow-hidden">
                                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                                 <span className="relative">عرض جميع الصيدليات</span>

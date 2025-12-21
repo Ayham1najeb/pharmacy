@@ -16,6 +16,9 @@ php artisan view:clear
 # Run migrations
 php artisan migrate --force
 
+# Seed neighborhoods (if not already seeded)
+php artisan db:seed --class=NeighborhoodSeeder --force
+
 # Cache for production
 php artisan config:cache
 php artisan route:cache

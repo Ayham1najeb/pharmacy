@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { pharmacyService } from '../../services/pharmacyService';
+import { apiService } from '../../services/api';
 import PharmacyCard from '../../components/shared/PharmacyCard';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import AnimatedCounter from '../../components/shared/AnimatedCounter';
 
 const Home = () => {
     const [onDutyNow, setOnDutyNow] = useState([]);
     const [onDutyToday, setOnDutyToday] = useState([]);
+    const [stats, setStats] = useState({ active_pharmacies: 0, total_neighborhoods: 0 });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -17,12 +20,14 @@ const Home = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const [nowData, todayData] = await Promise.all([
+            const [nowData, todayData, statsData] = await Promise.all([
                 pharmacyService.getOnDutyNow(),
-                pharmacyService.getOnDutyToday()
+                pharmacyService.getOnDutyToday(),
+                apiService.get('/api/v1/statistics')
             ]);
             setOnDutyNow(nowData);
             setOnDutyToday(todayData);
+            setStats(statsData);
         } catch (err) {
             setError('حدث خطأ في تحميل البيانات');
             console.error(err);
@@ -94,14 +99,14 @@ const Home = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                         <div className="bg-white dark:bg-gray-900 rounded-xl p-8 text-center shadow-lg border border-gray-200 dark:border-gray-700">
                             <div className="text-5xl font-black text-blue-600 dark:text-blue-400 mb-2">
-                                {onDutyToday.filter(s => new Date(s.duty_date).toDateString() === new Date().toDateString()).length}
+                                <AnimatedCounter targetValue={onDutyToday.filter(s => new Date(s.duty_date).toDateString() === new Date().toDateString()).length} duration={1200} />
                             </div>
                             <div className="text-gray-600 dark:text-gray-400 font-semibold">صيدليات مناوبة اليوم</div>
                         </div>
 
                         <div className="bg-white dark:bg-gray-900 rounded-xl p-8 text-center shadow-lg border border-gray-200 dark:border-gray-700">
                             <div className="text-5xl font-black text-green-600 dark:text-green-400 mb-2">
-                                {onDutyNow.length}
+                                <AnimatedCounter targetValue={onDutyNow.length} duration={1200} />
                             </div>
                             <div className="text-gray-600 dark:text-gray-400 font-semibold">مفتوحة الآن</div>
                         </div>
@@ -240,11 +245,15 @@ const Home = () => {
                                 <div className="text-slate-400 font-medium">خدمة متواصلة</div>
                             </div>
                             <div className="bg-slate-800/30 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 hover:bg-slate-800/50 transition-colors duration-300">
-                                <div className="text-4xl font-black text-white mb-2">6</div>
+                                <div className="text-4xl font-black text-white mb-2">
+                                    <AnimatedCounter targetValue={stats.total_neighborhoods || 0} duration={1500} />
+                                </div>
                                 <div className="text-slate-400 font-medium">أحياء مغطاة</div>
                             </div>
                             <div className="bg-slate-800/30 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 hover:bg-slate-800/50 transition-colors duration-300">
-                                <div className="text-4xl font-black text-white mb-2">5+</div>
+                                <div className="text-4xl font-black text-white mb-2">
+                                    <AnimatedCounter targetValue={stats.active_pharmacies || 0} duration={1500} />
+                                </div>
                                 <div className="text-slate-400 font-medium">صيدليات متوفرة</div>
                             </div>
                         </div>

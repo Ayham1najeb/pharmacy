@@ -12,6 +12,8 @@ import PharmacyDetails from './pages/public/PharmacyDetails';
 import Search from './pages/public/Search';
 import About from './pages/public/About';
 import Register from './pages/public/Register';
+import PrivacyPolicy from './pages/public/PrivacyPolicy';
+import Terms from './pages/public/Terms';
 
 // Pharmacist Pages
 import PharmacistDashboard from './pages/pharmacist/Dashboard';
@@ -69,6 +71,8 @@ function AppContent() {
           <Route path="/search" element={<Search />} />
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
 
           {/* Pharmacist Routes */}
           <Route path="/pharmacist/dashboard" element={<PharmacistDashboard />} />

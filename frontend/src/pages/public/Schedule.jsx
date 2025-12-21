@@ -122,7 +122,7 @@ const Schedule = () => {
                 <div
                     key={day}
                     onClick={() => setSelectedDate(day)}
-                    className={`h-24 p-2 border border-gray-200 dark:border-gray-700 cursor-pointer transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 ${isTodayDate ? 'bg-blue-100 dark:bg-blue-900/30 ring-2 ring-blue-500' : 'bg-white dark:bg-gray-800'
+                    className={`min-h-[100px] md:h-24 p-2 md:p-2 border border-gray-200 dark:border-gray-700 cursor-pointer transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 ${isTodayDate ? 'bg-blue-100 dark:bg-blue-900/30 ring-2 ring-blue-500' : 'bg-white dark:bg-gray-800'
                         } ${isSelected ? 'ring-2 ring-green-500' : ''}`}
                 >
                     <div className="flex justify-between items-start">
@@ -196,7 +196,7 @@ const Schedule = () => {
                     {/* Day Headers */}
                     <div className="grid grid-cols-7 gap-px bg-slate-100 dark:bg-gray-700 border border-slate-200 dark:border-gray-600 rounded-t-xl overflow-hidden text-center mb-px">
                         {arabicDays.map(day => (
-                            <div key={day} className="py-3 bg-slate-50 dark:bg-gray-800 font-semibold text-slate-500 dark:text-gray-400 text-sm">
+                            <div key={day} className="py-2 md:py-3 bg-slate-50 dark:bg-gray-800 font-semibold text-slate-500 dark:text-gray-400 text-[10px] md:text-sm">
                                 {day}
                             </div>
                         ))}

@@ -66,7 +66,7 @@ const Footer = () => {
                                 </div>
                                 <div className="mt-0.5">
                                     <p className="text-xs text-slate-500 dark:text-slate-500 font-bold mb-0.5">البريد الإلكتروني</p>
-                                    <p className="text-sm text-slate-800 dark:text-slate-200 font-bold">info@maarrat-pharmacy.sy</p>
+                                    <p className="text-sm text-slate-800 dark:text-slate-200 font-bold">ayhamoy2@gmail.com</p>
                                 </div>
                             </div>
 
@@ -107,7 +107,7 @@ const Footer = () => {
                             &copy; {currentYear} صيدليات معرة النعمان. جميع الحقوق محفوظة.
                         </p>
                         <p className="mt-2 text-sm font-bold text-slate-600 dark:text-slate-400">
-                            تم إنشاء الموقع من قبل <span className="text-blue-800 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-all cursor-default scale-105 inline-block">المهندس أيهم نجيب</span>
+                            تم إنشاء الموقع من قبل :<span className="text-blue-800 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-all cursor-default scale-105 inline-block">المهندس أيهم نجيب</span>
                         </p>
                     </div>
 

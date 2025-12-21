@@ -48,10 +48,10 @@ const Home = () => {
 
 
 
-                <div className="container mx-auto px-4 py-24 md:py-32 relative z-10">
+                <div className="container mx-auto px-4 py-16 md:py-32 relative z-10">
                     <div className="max-w-4xl mx-auto text-center">
                         {/* Status Badge */}
-                        <div className="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-md border border-slate-700/50 px-4 py-1.5 rounded-full mb-8 shadow-lg ring-1 ring-white/10">
+                        <div className="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-md border border-slate-700/50 px-4 py-1.5 rounded-full mb-6 md:mb-8 mt-4 md:mt-0 shadow-lg ring-1 ring-white/10">
                             <span className="relative flex h-2.5 w-2.5">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
@@ -73,12 +73,12 @@ const Home = () => {
                         </p>
 
                         {/* CTA Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">
-                            <Link to="/pharmacies" className="group relative px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-sm sm:text-base transition-all duration-300 shadow-lg hover:shadow-blue-500/25 overflow-hidden">
+                        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4 sm:px-0 -mt-2 md:mt-0">
+                            <Link to="/pharmacies" className="group relative px-6 py-3.5 md:py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-base transition-all duration-300 shadow-lg hover:shadow-blue-500/25 overflow-hidden">
                                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                                 <span className="relative">عرض جميع الصيدليات</span>
                             </Link>
-                            <Link to="/schedule" className="px-6 py-3 bg-slate-800/50 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-slate-600 rounded-xl font-bold text-sm sm:text-base transition-all duration-300 backdrop-blur-sm">
+                            <Link to="/schedule" className="px-6 py-3.5 md:py-3 bg-slate-800/50 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-slate-600 rounded-xl font-bold text-base transition-all duration-300 backdrop-blur-sm">
                                 جدول المناوبات
                             </Link>
                         </div>

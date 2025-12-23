@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PharmacyResource;
+use App\Http\Resources\DutyScheduleResource;
 use App\Models\Pharmacy;
 use App\Models\DutySchedule;
 use Illuminate\Http\Request;
@@ -15,8 +17,10 @@ class PharmacyController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $query = Pharmacy::with('neighborhood')
-            ->active();
+        $query = Pharmacy::select(['id', 'name', 'owner_name', 'phone', 'address', 'neighborhood_id', 'latitude', 'longitude'])
+            ->with('neighborhood:id,name')
+            ->where('is_active', true)
+            ->where('is_approved', true);
 
         // Search
         if ($request->has('q')) {
@@ -28,11 +32,10 @@ class PharmacyController extends Controller
             $query->byNeighborhood($request->neighborhood);
         }
 
-        // Pagination
-        $perPage = $request->get('per_page', 15);
-        $pharmacies = $query->paginate($perPage);
+        // Get all for map (no pagination needed for map view)
+        $pharmacies = $query->get();
 
-        return response()->json($pharmacies);
+        return response()->json(PharmacyResource::collection($pharmacies));
     }
 
     /**
@@ -54,16 +57,17 @@ class PharmacyController extends Controller
      */
     public function onDutyToday(): JsonResponse
     {
-        $schedules = DutySchedule::with(['pharmacy.neighborhood'])
+        $schedules = DutySchedule::select(['id', 'pharmacy_id', 'duty_date'])
+            ->with(['pharmacy:id,name,address,phone,neighborhood_id,latitude,longitude', 'pharmacy.neighborhood:id,name'])
             ->whereDate('duty_date', '>=', now()->toDateString())
-            ->orderBy('duty_date', 'asc')
-            ->take(9)
             ->whereHas('pharmacy', function ($query) {
-                $query->active();
+                $query->where('is_active', true)->where('is_approved', true);
             })
+            ->orderBy('duty_date', 'asc')
+            ->limit(9)
             ->get();
 
-        return response()->json($schedules);
+        return response()->json(DutyScheduleResource::collection($schedules));
     }
 
     /**

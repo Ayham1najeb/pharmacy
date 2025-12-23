@@ -16,13 +16,22 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.logs in production
+        drop_debugger: true
+      }
+    },
     rollupOptions: {
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'map-vendor': ['leaflet', 'react-leaflet']
+          'map-vendor': ['leaflet', 'react-leaflet'],
+          'axios-vendor': ['axios']
         }
       }
-    }
+    },
+    chunkSizeWarningLimit: 600, // Warn if chunk size exceeds 600kb
   }
 })

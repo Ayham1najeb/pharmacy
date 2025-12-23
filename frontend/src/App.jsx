@@ -1,39 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import LoadingSpinner from './components/common/LoadingSpinner';
 
-// Public Pages
-import Home from './pages/public/Home';
-import Schedule from './pages/public/Schedule';
-import Map from './pages/public/Map';
-import AllPharmacies from './pages/public/AllPharmacies';
-import PharmacyDetails from './pages/public/PharmacyDetails';
-import Search from './pages/public/Search';
-import About from './pages/public/About';
-import Register from './pages/public/Register';
-import PrivacyPolicy from './pages/public/PrivacyPolicy';
-import Terms from './pages/public/Terms';
-
-// Pharmacist Pages
-import PharmacistDashboard from './pages/pharmacist/Dashboard';
-import PharmacistProfile from './pages/pharmacist/Profile';
-import MySchedule from './pages/pharmacist/MySchedule';
-
-// Admin Pages
-import AdminLogin from './pages/admin/Login';
-import AdminDashboard from './pages/admin/Dashboard';
-import PharmaciesManagement from './pages/admin/PharmaciesManagement';
-import ScheduleManagement from './pages/admin/ScheduleManagement';
-import NeighborhoodsManagement from './pages/admin/NeighborhoodsManagement';
-import ReviewsManagement from './pages/admin/ReviewsManagement';
-import Settings from './pages/admin/Settings';
-import UsersManagement from './pages/admin/UsersManagement';
-
-// Components
+// Components that need to load immediately (shared)
 import Header from './components/shared/Header';
 import Footer from './components/shared/Footer';
 import { usePageTracking } from './hooks/usePageTracking';
+
+// Lazy load all page components for better performance
+const Home = lazy(() => import('./pages/public/Home'));
+const Schedule = lazy(() => import('./pages/public/Schedule'));
+const Map = lazy(() => import('./pages/public/Map'));
+const AllPharmacies = lazy(() => import('./pages/public/AllPharmacies'));
+const PharmacyDetails = lazy(() => import('./pages/public/PharmacyDetails'));
+const Search = lazy(() => import('./pages/public/Search'));
+const About = lazy(() => import('./pages/public/About'));
+const Register = lazy(() => import('./pages/public/Register'));
+const PrivacyPolicy = lazy(() => import('./pages/public/PrivacyPolicy'));
+const Terms = lazy(() => import('./pages/public/Terms'));
+
+// Pharmacist Pages
+const PharmacistDashboard = lazy(() => import('./pages/pharmacist/Dashboard'));
+const PharmacistProfile = lazy(() => import('./pages/pharmacist/Profile'));
+const MySchedule = lazy(() => import('./pages/pharmacist/MySchedule'));
+
+// Admin Pages
+const AdminLogin = lazy(() => import('./pages/admin/Login'));
+const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'));
+const PharmaciesManagement = lazy(() => import('./pages/admin/PharmaciesManagement'));
+const ScheduleManagement = lazy(() => import('./pages/admin/ScheduleManagement'));
+const NeighborhoodsManagement = lazy(() => import('./pages/admin/NeighborhoodsManagement'));
+const ReviewsManagement = lazy(() => import('./pages/admin/ReviewsManagement'));
+const Settings = lazy(() => import('./pages/admin/Settings'));
+const UsersManagement = lazy(() => import('./pages/admin/UsersManagement'));
 
 function AppContent() {
   const { theme } = useTheme();
@@ -60,35 +61,37 @@ function AppContent() {
       {!shouldHideHeaderFooter && <Header />}
 
       <main className={shouldHideHeaderFooter ? '' : 'flex-grow'}>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<AdminLogin />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/map" element={<Map />} />
-          <Route path="/pharmacies" element={<AllPharmacies />} />
-          <Route path="/pharmacy/:id" element={<PharmacyDetails />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<Terms />} />
+        <Suspense fallback={<LoadingSpinner fullScreen={true} />}>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<AdminLogin />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/map" element={<Map />} />
+            <Route path="/pharmacies" element={<AllPharmacies />} />
+            <Route path="/pharmacy/:id" element={<PharmacyDetails />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
 
-          {/* Pharmacist Routes */}
-          <Route path="/pharmacist/dashboard" element={<PharmacistDashboard />} />
-          <Route path="/pharmacist/profile" element={<PharmacistProfile />} />
-          <Route path="/pharmacist/schedule" element={<MySchedule />} />
+            {/* Pharmacist Routes */}
+            <Route path="/pharmacist/dashboard" element={<PharmacistDashboard />} />
+            <Route path="/pharmacist/profile" element={<PharmacistProfile />} />
+            <Route path="/pharmacist/schedule" element={<MySchedule />} />
 
-          {/* Admin Routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/pharmacies" element={<PharmaciesManagement />} />
-          <Route path="/admin/schedule" element={<ScheduleManagement />} />
-          <Route path="/admin/neighborhoods" element={<NeighborhoodsManagement />} />
-          <Route path="/admin/reviews" element={<ReviewsManagement />} />
-          <Route path="/admin/settings" element={<Settings />} />
-          <Route path="/admin/users" element={<UsersManagement />} />
-        </Routes>
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/pharmacies" element={<PharmaciesManagement />} />
+            <Route path="/admin/schedule" element={<ScheduleManagement />} />
+            <Route path="/admin/neighborhoods" element={<NeighborhoodsManagement />} />
+            <Route path="/admin/reviews" element={<ReviewsManagement />} />
+            <Route path="/admin/settings" element={<Settings />} />
+            <Route path="/admin/users" element={<UsersManagement />} />
+          </Routes>
+        </Suspense>
       </main>
 
       {/* Only show Footer if NOT admin/pharmacist page */}

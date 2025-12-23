@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { useAuth } from '../../context/AuthContext';
+
+// Fix for default marker icons in React Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
     const { token } = useAuth();
@@ -60,6 +71,25 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
         }
     }, [isOpen, pharmacy]);
 
+    // Map location picker component
+    const LocationMarker = () => {
+        useMapEvents({
+            click(e) {
+                setFormData(prev => ({
+                    ...prev,
+                    latitude: e.latlng.lat,
+                    longitude: e.latlng.lng
+                }));
+            },
+        });
+
+        return formData.latitude && formData.longitude ? (
+            <Marker
+                position={[formData.latitude, formData.longitude]}
+            />
+        ) : null;
+    };
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({
@@ -70,6 +100,13 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate location is set
+        if (!formData.latitude || !formData.longitude) {
+            alert('⚠️ يرجى تحديد موقع الصيدلية على الخريطة أولاً');
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -96,7 +133,7 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
                 <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50 rounded-t-xl">
                     <h2 className="text-xl font-bold text-gray-900">
                         {pharmacy ? 'تعديل بيانات الصيدلية' : 'إضافة صيدلية جديدة'}
@@ -104,7 +141,40 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-700 font-bold text-xl">&times;</button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                    {/* Map Location Picker */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <label className="block text-sm font-bold text-gray-800 mb-3">
+                            📍 حدد موقع الصيدلية على الخريطة (مطلوب)
+                        </label>
+                        <div className="relative rounded-lg overflow-hidden border border-gray-300 h-[350px]">
+                            <MapContainer
+                                center={[
+                                    formData.latitude || 35.6476,
+                                    formData.longitude || 36.6746
+                                ]}
+                                zoom={15}
+                                style={{ height: '100%', width: '100%' }}
+                            >
+                                <TileLayer
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                                />
+                                <LocationMarker />
+                            </MapContainer>
+                        </div>
+                        <div className="mt-3 text-sm">
+                            {formData.latitude && formData.longitude ? (
+                                <p className="text-green-700 font-medium bg-green-100 px-3 py-2 rounded-lg">
+                                    ✅ تم تحديد الموقع: {formData.latitude.toFixed(6)}, {formData.longitude.toFixed(6)}
+                                </p>
+                            ) : (
+                                <p className="text-amber-700 font-medium bg-amber-100 px-3 py-2 rounded-lg">
+                                    ⚠️ انقر على الخريطة لتحديد موقع الصيدلية
+                                </p>
+                            )}
+                        </div>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">اسم الصيدلية</label>
@@ -163,31 +233,6 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
                             rows="2"
                             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                         />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1">خط العرض (Latitude)</label>
-                            <input
-                                type="number"
-                                step="any"
-                                name="latitude"
-                                value={formData.latitude}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1">خط الطول (Longitude)</label>
-                            <input
-                                type="number"
-                                step="any"
-                                name="longitude"
-                                value={formData.longitude}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                            />
-                        </div>
                     </div>
 
                     <div className="flex items-center gap-2 pt-2">

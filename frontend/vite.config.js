@@ -16,13 +16,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console.logs in production
-        drop_debugger: true
-      }
-    },
+    minify: 'esbuild', // Use esbuild (faster and included by default)
     rollupOptions: {
       output: {
         manualChunks: {

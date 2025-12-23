@@ -226,9 +226,14 @@ const Map = () => {
                                         <div className="w-8 h-8 border-2 border-slate-200 border-t-blue-600 rounded-full animate-spin"></div>
                                     </div>
                                 ) : filteredPharmacies.length === 0 ? (
-                                    <div className="text-center py-12 px-4 rounded-xl border border-dashed border-slate-200 bg-slate-50">
+                                    <div className="text-center py-12 px-4 rounded-xl border border-dashed border-slate-200 dark:border-gray-600 bg-slate-50 dark:bg-gray-700">
                                         <span className="text-3xl block mb-2 opacity-50">🧐</span>
-                                        <p className="text-slate-500 text-sm">لا توجد نتائج مطابقة لبحثك</p>
+                                        <p className="text-slate-700 dark:text-gray-300 font-semibold mb-2">لا توجد صيدليات مطابقة</p>
+                                        <p className="text-slate-500 dark:text-gray-400 text-sm">
+                                            {selectedNeighborhood !== 'all' || searchTerm !== ''
+                                                ? 'جرب تغيير الفلاتر للعثور على صيدليات'
+                                                : 'لا توجد صيدليات بإحداثيات محددة على الخريطة'}
+                                        </p>
                                     </div>
                                 ) : (
                                     filteredPharmacies.map(pharmacy => (

@@ -71,6 +71,60 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
         }
     }, [isOpen, pharmacy]);
 
+    // Geocoding function - Convert address to coordinates
+    const handleGeocodeAddress = async () => {
+        if (!formData.address || formData.address.trim() === '') {
+            alert('⚠️ يرجى كتابة العنوان أولاً');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            // Using Nominatim (OpenStreetMap) geocoding API
+            const searchQuery = `${formData.address}, معرة النعمان, سوريا`;
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=1`,
+                {
+                    headers: {
+                        'Accept-Language': 'ar'
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                const { lat, lon } = data[0];
+                setFormData(prev => ({
+                    ...prev,
+                    latitude: parseFloat(lat),
+                    longitude: parseFloat(lon)
+                }));
+                alert('✅ تم العثور على الموقع بنجاح!');
+            } else {
+                alert('⚠️ لم يتم العثور على الموقع. يرجى تحديده يدوياً على الخريطة.');
+                // Set default coordinates if not found
+                setFormData(prev => ({
+                    ...prev,
+                    latitude: 35.6476,
+                    longitude: 36.6746
+                }));
+            }
+        } catch (error) {
+            console.error('Geocoding error:', error);
+            alert('❌ حدث خطأ أثناء البحث عن الموقع. يرجى تحديده يدوياً على الخريطة.');
+            // Set default coordinates on error
+            setFormData(prev => ({
+                ...prev,
+                latitude: 35.6476,
+                longitude: 36.6746
+            }));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
     // Map location picker component
     const LocationMarker = () => {
         useMapEvents({
@@ -225,14 +279,39 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
 
                     <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-1">العنوان بالتفصيل</label>
-                        <textarea
-                            required
-                            name="address"
-                            value={formData.address}
-                            onChange={handleChange}
-                            rows="2"
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                        />
+                        <div className="flex gap-2">
+                            <textarea
+                                required
+                                name="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                                rows="2"
+                                className="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                placeholder="مثال: شارع الجامع الكبير، بالقرب من السوق القديم"
+                            />
+                            <button
+                                type="button"
+                                onClick={handleGeocodeAddress}
+                                disabled={geocoding || !formData.address}
+                                className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 whitespace-nowrap"
+                                title="تحويل العنوان إلى موقع على الخريطة"
+                            >
+                                {geocoding ? (
+                                    <>
+                                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                        جاري البحث...
+                                    </>
+                                ) : (
+                                    <>
+                                        🔍
+                                        ابحث عن الموقع
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">
+                            💡 اكتب العنوان بالتفصيل ثم اضغط "ابحث عن الموقع" لتحديد الموقع تلقائياً، أو حدده يدوياً على الخريطة
+                        </p>
                     </div>
 
                     <div className="flex items-center gap-2 pt-2">

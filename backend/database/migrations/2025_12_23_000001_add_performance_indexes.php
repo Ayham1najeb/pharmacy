@@ -20,9 +20,9 @@ return new class extends Migration
         });
 
         Schema::table('duty_schedules', function (Blueprint $table) {
-            $table->index('date', 'idx_duty_schedules_date');
+            $table->index('duty_date', 'idx_duty_schedules_duty_date');
             $table->index('pharmacy_id', 'idx_duty_schedules_pharmacy_id');
-            $table->index(['date', 'pharmacy_id'], 'idx_duty_schedules_date_pharmacy');
+            $table->index(['duty_date', 'pharmacy_id'], 'idx_duty_schedules_date_pharmacy');
         });
 
         Schema::table('reviews', function (Blueprint $table) {
@@ -48,7 +48,7 @@ return new class extends Migration
         });
 
         Schema::table('duty_schedules', function (Blueprint $table) {
-            $table->dropIndex('idx_duty_schedules_date');
+            $table->dropIndex('idx_duty_schedules_duty_date');
             $table->dropIndex('idx_duty_schedules_pharmacy_id');
             $table->dropIndex('idx_duty_schedules_date_pharmacy');
         });

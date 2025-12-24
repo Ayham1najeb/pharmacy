@@ -58,7 +58,7 @@ class PharmacyController extends Controller
     public function onDutyToday(): JsonResponse
     {
         $schedules = DutySchedule::select(['id', 'pharmacy_id', 'duty_date'])
-            ->with(['pharmacy:id,name,address,phone,neighborhood_id,latitude,longitude', 'pharmacy.neighborhood:id,name'])
+            ->with(['pharmacy:id,name,owner_name,address,phone,neighborhood_id,latitude,longitude', 'pharmacy.neighborhood:id,name'])
             ->whereDate('duty_date', '>=', now()->toDateString())
             ->whereHas('pharmacy', function ($query) {
                 $query->where('is_active', true)->where('is_approved', true);

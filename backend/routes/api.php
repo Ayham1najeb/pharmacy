@@ -57,6 +57,20 @@ Route::prefix('v1')->group(function () {
     Route::get('/health', function () {
         return response()->json(['status' => 'ok', 'timestamp' => now()]);
     });
+    
+    // Database health check
+    Route::get('/health/db', function () {
+        $neighborhoods = \App\Models\Neighborhood::count();
+        $pharmacies = \App\Models\Pharmacy::count();
+        
+        return response()->json([
+            'status' => 'ok',
+            'database' => 'connected',
+            'neighborhoods_count' => $neighborhoods,
+            'pharmacies_count' => $pharmacies,
+            'needs_seeding' => $neighborhoods === 0
+        ]);
+    });
 });
 
 // Pharmacist API Routes (v1)

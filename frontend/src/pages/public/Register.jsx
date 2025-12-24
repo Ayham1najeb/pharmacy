@@ -36,10 +36,12 @@ const Register = () => {
     });
 
     const [neighborhoods, setNeighborhoods] = useState([]);
+    const [neighborhoodsLoading, setNeighborhoodsLoading] = useState(true);
 
     // Fetch neighborhoods on mount
     React.useEffect(() => {
         const fetchNeighborhoods = async () => {
+            setNeighborhoodsLoading(true);
             try {
                 const response = await apiService.get('/api/v1/neighborhoods');
                 // Handle both raw array (direct get) and wrapped data (paginated/resource)
@@ -47,6 +49,8 @@ const Register = () => {
                 setNeighborhoods(data);
             } catch (err) {
                 console.error('Error fetching neighborhoods:', err);
+            } finally {
+                setNeighborhoodsLoading(false);
             }
         };
         fetchNeighborhoods();
@@ -377,9 +381,10 @@ const Register = () => {
                                                 name="neighborhood_id"
                                                 value={formData.neighborhood_id}
                                                 onChange={handleChange}
-                                                className={`w-full px-4 py-3 border ${errors.neighborhood_id ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white`}
+                                                disabled={neighborhoodsLoading}
+                                                className={`w-full px-4 py-3 border ${errors.neighborhood_id ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white ${neighborhoodsLoading ? 'opacity-50 cursor-wait' : ''}`}
                                             >
-                                                <option value="">اختر الحي</option>
+                                                <option value="">{neighborhoodsLoading ? '⏳ جاري تحميل الأحياء...' : 'اختر الحي'}</option>
                                                 {neighborhoods.map(neighborhood => (
                                                     <option key={neighborhood.id} value={neighborhood.id}>
                                                         {neighborhood.name}

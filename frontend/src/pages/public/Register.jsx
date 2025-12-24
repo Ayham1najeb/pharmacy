@@ -41,7 +41,7 @@ const Register = () => {
     React.useEffect(() => {
         const fetchNeighborhoods = async () => {
             try {
-                const response = await apiService.get('/v1/neighborhoods');
+                const response = await apiService.get('/api/v1/neighborhoods');
                 // Handle both raw array (direct get) and wrapped data (paginated/resource)
                 const data = Array.isArray(response) ? response : (response.data || []);
                 setNeighborhoods(data);
@@ -159,7 +159,7 @@ const Register = () => {
         }
 
         try {
-            const response = await apiService.post('/v1/auth/register', formData);
+            const response = await apiService.post('/api/v1/auth/register', formData);
 
             if (response.success) {
                 const message = response.data?.auto_approved

@@ -122,6 +122,10 @@ const Register = () => {
             newErrors.pharmacy_name = 'اسم الصيدلية يجب أن يكون 3 أحرف على الأقل';
         }
 
+        if (formData.owner_name.trim().length < 3) {
+            newErrors.owner_name = 'اسم المالك يجب أن يكون 3 أحرف على الأقل';
+        }
+
         if (formData.address.trim().length < 10) {
             newErrors.address = 'العنوان يجب أن يكون 10 أحرف على الأقل';
         }
@@ -136,6 +140,7 @@ const Register = () => {
 
         if (!formData.email) newErrors.email = 'البريد الإلكتروني مطلوب';
         if (!formData.password) newErrors.password = 'كلمة المرور مطلوبة';
+        if (!formData.neighborhood_id) newErrors.neighborhood_id = 'الحي مطلوب';
 
         return newErrors;
     };
@@ -174,11 +179,24 @@ const Register = () => {
             }
         } catch (err) {
             if (err.response?.data?.errors) {
-                setErrors(err.response.data.errors);
+                // Map backend validation errors to form fields
+                const backendErrors = err.response.data.errors;
+                const mappedErrors = {};
+
+                // Convert Laravel validation errors format to our format
+                Object.keys(backendErrors).forEach(key => {
+                    // Laravel returns arrays of error messages, take the first one
+                    mappedErrors[key] = Array.isArray(backendErrors[key])
+                        ? backendErrors[key][0]
+                        : backendErrors[key];
+                });
+
+                setErrors(mappedErrors);
             } else {
                 setErrors({ general: err.response?.data?.message || 'حدث خطأ أثناء التسجيل' });
             }
             setLoading(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 

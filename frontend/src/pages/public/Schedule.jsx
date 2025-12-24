@@ -108,7 +108,7 @@ const Schedule = () => {
 
         // Empty cells before first day
         for (let i = 0; i < firstDay; i++) {
-            days.push(<div key={`empty-${i}`} className="h-24 bg-gray-50 dark:bg-gray-800/50"></div>);
+            days.push(<div key={`empty-${i}`} className="aspect-square md:h-24 bg-gray-50 dark:bg-gray-800/50"></div>);
         }
 
         // Days of month
@@ -122,28 +122,28 @@ const Schedule = () => {
                 <div
                     key={day}
                     onClick={() => setSelectedDate(day)}
-                    className={`min-h-[100px] md:h-24 p-2 md:p-2 border border-gray-200 dark:border-gray-700 cursor-pointer transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 ${isTodayDate ? 'bg-blue-100 dark:bg-blue-900/30 ring-2 ring-blue-500' : 'bg-white dark:bg-gray-800'
+                    className={`aspect-square md:h-24 p-1.5 md:p-2 border border-gray-200 dark:border-gray-700 cursor-pointer transition-all hover:bg-blue-50 dark:hover:bg-blue-900/20 flex flex-col ${isTodayDate ? 'bg-blue-100 dark:bg-blue-900/30 ring-2 ring-blue-500' : 'bg-white dark:bg-gray-800'
                         } ${isSelected ? 'ring-2 ring-green-500' : ''}`}
                 >
-                    <div className="flex justify-between items-start">
-                        <span className={`font-bold ${isTodayDate ? 'text-blue-600 dark:text-blue-400' : 'text-gray-800 dark:text-white'}`}>
+                    <div className="flex justify-between items-start mb-1">
+                        <span className={`font-bold text-sm md:text-base ${isTodayDate ? 'text-blue-600 dark:text-blue-400' : 'text-gray-800 dark:text-white'}`}>
                             {day}
                         </span>
                         {hasSchedule && (
-                            <span className="bg-green-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                            <span className="bg-green-500 text-white text-[10px] md:text-xs px-1 md:px-1.5 py-0.5 rounded-full leading-tight">
                                 {daySchedules.length}
                             </span>
                         )}
                     </div>
                     {hasSchedule && (
-                        <div className="mt-1 space-y-1">
-                            {daySchedules.slice(0, 2).map((schedule, idx) => (
-                                <div key={idx} className="text-xs bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 px-1 py-0.5 rounded truncate">
+                        <div className="flex-1 flex flex-col gap-0.5 md:gap-1 overflow-hidden">
+                            {daySchedules.slice(0, 1).map((schedule, idx) => (
+                                <div key={idx} className="text-[9px] md:text-xs bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 px-1 py-0.5 rounded truncate leading-tight">
                                     {schedule.pharmacy?.name || 'صيدلية'}
                                 </div>
                             ))}
-                            {daySchedules.length > 2 && (
-                                <div className="text-xs text-gray-500">+{daySchedules.length - 2} أخرى</div>
+                            {daySchedules.length > 1 && (
+                                <div className="text-[9px] md:text-xs text-gray-500 dark:text-gray-400 leading-tight">+{daySchedules.length - 1}</div>
                             )}
                         </div>
                     )}

@@ -71,6 +71,41 @@ Route::prefix('v1')->group(function () {
             'needs_seeding' => $neighborhoods === 0
         ]);
     });
+    
+    // Manual seed neighborhoods - افتح هذا الرابط من المتصفح لإضافة الأحياء
+    Route::get('/seed/neighborhoods', function () {
+        $existingCount = \App\Models\Neighborhood::count();
+        
+        if ($existingCount > 0) {
+            return response()->json([
+                'status' => 'already_seeded',
+                'message' => 'الأحياء موجودة بالفعل!',
+                'count' => $existingCount,
+                'neighborhoods' => \App\Models\Neighborhood::all()
+            ]);
+        }
+        
+        $neighborhoods = [
+            ['name' => 'الحي الشرقي', 'area_code' => 'E01'],
+            ['name' => 'الحي الغربي', 'area_code' => 'W01'],
+            ['name' => 'الحي الشمالي', 'area_code' => 'N01'],
+            ['name' => 'الحي الجنوبي', 'area_code' => 'S01'],
+            ['name' => 'المركز', 'area_code' => 'C01'],
+            ['name' => 'الصناعة', 'area_code' => 'I01'],
+        ];
+
+        $created = [];
+        foreach ($neighborhoods as $neighborhood) {
+            $created[] = \App\Models\Neighborhood::create($neighborhood);
+        }
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'تم إضافة الأحياء بنجاح! ✅',
+            'count' => count($created),
+            'neighborhoods' => $created
+        ]);
+    });
 });
 
 // Pharmacist API Routes (v1)

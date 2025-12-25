@@ -53,9 +53,37 @@ Route::prefix('v1')->group(function () {
         Route::get('/auth/me', [App\Http\Controllers\Api\AuthController::class, 'me']);
     });
     
-    // Health check for Render
+    // Health check for Render - also warms up cache
     Route::get('/health', function () {
         return response()->json(['status' => 'ok', 'timestamp' => now()]);
+    });
+    
+    // Warmup endpoint - call this to pre-cache data (use with UptimeRobot)
+    Route::get('/warmup', function () {
+        // Pre-warm common caches
+        $stats = \Illuminate\Support\Facades\Cache::remember('site_statistics', 300, function () {
+            return [
+                'pharmacies' => \App\Models\Pharmacy::active()->count(),
+                'neighborhoods' => \App\Models\Neighborhood::count(),
+            ];
+        });
+        
+        \Illuminate\Support\Facades\Cache::remember('neighborhoods_list', 600, function () {
+            return \App\Models\Neighborhood::withCount('pharmacies')->get();
+        });
+        
+        \Illuminate\Support\Facades\Cache::remember('on_duty_today', 180, function () {
+            return \App\Models\DutySchedule::with(['pharmacy.neighborhood'])
+                ->whereDate('duty_date', '>=', now()->toDateString())
+                ->limit(9)
+                ->get();
+        });
+        
+        return response()->json([
+            'status' => 'warmed',
+            'timestamp' => now(),
+            'cached' => ['statistics', 'neighborhoods', 'schedules']
+        ]);
     });
     
     // Database health check

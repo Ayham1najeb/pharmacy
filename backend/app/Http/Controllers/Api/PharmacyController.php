@@ -18,23 +18,28 @@ class PharmacyController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $query = Pharmacy::select(['id', 'name', 'owner_name', 'phone', 'address', 'neighborhood_id', 'latitude', 'longitude'])
-            ->with('neighborhood:id,name')
-            ->where('is_active', true)
-            ->where('is_approved', true);
+        // Create cache key based on filters
+        $cacheKey = 'pharmacies_list_' . md5($request->get('q', '') . '_' . $request->get('neighborhood', ''));
+        
+        // Cache for 3 minutes - with filter-specific key
+        $pharmacies = Cache::remember($cacheKey, 180, function () use ($request) {
+            $query = Pharmacy::select(['id', 'name', 'owner_name', 'phone', 'address', 'neighborhood_id', 'latitude', 'longitude'])
+                ->with('neighborhood:id,name')
+                ->where('is_active', true)
+                ->where('is_approved', true);
 
-        // Search
-        if ($request->has('q')) {
-            $query->search($request->q);
-        }
+            // Search
+            if ($request->has('q')) {
+                $query->search($request->q);
+            }
 
-        // Filter by neighborhood
-        if ($request->has('neighborhood')) {
-            $query->byNeighborhood($request->neighborhood);
-        }
+            // Filter by neighborhood
+            if ($request->has('neighborhood')) {
+                $query->byNeighborhood($request->neighborhood);
+            }
 
-        // Get all for map (no pagination needed for map view)
-        $pharmacies = $query->get();
+            return $query->get();
+        });
 
         return response()->json(PharmacyResource::collection($pharmacies));
     }

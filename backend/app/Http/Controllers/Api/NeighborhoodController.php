@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Neighborhood;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class NeighborhoodController extends Controller
 {
@@ -27,11 +28,16 @@ class NeighborhoodController extends Controller
             foreach ($neighborhoods as $neighborhood) {
                 Neighborhood::create($neighborhood);
             }
+            // Clear cache after seeding
+            Cache::forget('neighborhoods_list');
         }
 
-        $neighborhoods = Neighborhood::withCount('pharmacies')
-            ->orderBy('name')
-            ->get();
+        // Cache neighborhoods for 10 minutes - they rarely change
+        $neighborhoods = Cache::remember('neighborhoods_list', 600, function () {
+            return Neighborhood::withCount('pharmacies')
+                ->orderBy('name')
+                ->get();
+        });
 
         return response()->json($neighborhoods);
     }

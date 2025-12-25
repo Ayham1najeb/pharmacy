@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { QUERY_KEYS } from '../../config/queryClient';
 
 // Fix for default marker icons in React Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -37,46 +39,32 @@ const RecenterMap = ({ center }) => {
 };
 
 const Map = () => {
-    const [pharmacies, setPharmacies] = useState([]);
-    const [neighborhoods, setNeighborhoods] = useState([]);
     const [selectedNeighborhood, setSelectedNeighborhood] = useState('all');
-    const [loading, setLoading] = useState(true);
     const [mapCenter, setMapCenter] = useState([35.6476, 36.6746]); // Maarrat al-Nu'man coordinates
     const [searchTerm, setSearchTerm] = useState('');
     const [userLocation, setUserLocation] = useState(null);
     const [isLocating, setIsLocating] = useState(false);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    // Use React Query for caching - instant load on return visits
+    const { data: pharmaciesData, isLoading: loadingPharmacies } = useQuery({
+        queryKey: QUERY_KEYS.pharmacies,
+        queryFn: async () => {
+            const response = await axios.get('/api/v1/pharmacies');
+            return Array.isArray(response.data) ? response.data : (response.data.data || []);
+        },
+    });
 
-    const fetchData = async () => {
-        try {
-            setLoading(true);
-            const [pharmaciesRes, neighborhoodsRes] = await Promise.all([
-                axios.get('/api/v1/pharmacies'),
-                axios.get('/api/v1/neighborhoods'),
-            ]);
+    const { data: neighborhoodsData, isLoading: loadingNeighborhoods } = useQuery({
+        queryKey: QUERY_KEYS.neighborhoods,
+        queryFn: async () => {
+            const response = await axios.get('/api/v1/neighborhoods');
+            return Array.isArray(response.data) ? response.data : (response.data.data || []);
+        },
+    });
 
-            // Handle different response structures
-            const pharmaciesData = Array.isArray(pharmaciesRes.data)
-                ? pharmaciesRes.data
-                : (pharmaciesRes.data.data || []);
-
-            const neighborhoodsData = Array.isArray(neighborhoodsRes.data)
-                ? neighborhoodsRes.data
-                : (neighborhoodsRes.data.data || []);
-
-            setPharmacies(pharmaciesData);
-            setNeighborhoods(neighborhoodsData);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            setPharmacies([]);
-            setNeighborhoods([]);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const pharmacies = pharmaciesData || [];
+    const neighborhoods = neighborhoodsData || [];
+    const loading = loadingPharmacies || loadingNeighborhoods;
 
     const handleLocateMe = () => {
         if (!navigator.geolocation) {

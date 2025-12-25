@@ -1,43 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { pharmacyService } from '../../services/pharmacyService';
 import { apiService } from '../../services/api';
 import PharmacyCard from '../../components/shared/PharmacyCard';
-import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import { HomePageSkeleton } from '../../components/shared/SkeletonCard';
 import AnimatedCounter from '../../components/shared/AnimatedCounter';
+import { QUERY_KEYS } from '../../config/queryClient';
 
 const Home = () => {
-    const [onDutyNow, setOnDutyNow] = useState([]);
-    const [onDutyToday, setOnDutyToday] = useState([]);
-    const [stats, setStats] = useState({ active_pharmacies: 0, total_neighborhoods: 0 });
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    // Use React Query for automatic caching - data stays fresh for 3 minutes
+    const { data: onDutyNow = [], isLoading: loadingNow } = useQuery({
+        queryKey: QUERY_KEYS.onDutyNow,
+        queryFn: pharmacyService.getOnDutyNow,
+    });
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    const { data: onDutyToday = [], isLoading: loadingToday } = useQuery({
+        queryKey: QUERY_KEYS.onDutyToday,
+        queryFn: pharmacyService.getOnDutyToday,
+    });
 
-    const fetchData = async () => {
-        try {
-            setLoading(true);
-            const [nowData, todayData, statsData] = await Promise.all([
-                pharmacyService.getOnDutyNow(),
-                pharmacyService.getOnDutyToday(),
-                apiService.get('/api/v1/statistics')
-            ]);
-            setOnDutyNow(nowData);
-            setOnDutyToday(todayData);
-            setStats(statsData);
-        } catch (err) {
-            setError('حدث خطأ في تحميل البيانات');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const { data: stats = { active_pharmacies: 0, total_neighborhoods: 0 }, isLoading: loadingStats } = useQuery({
+        queryKey: QUERY_KEYS.statistics,
+        queryFn: () => apiService.get('/api/v1/statistics'),
+    });
 
-    if (loading) {
-        return <LoadingSpinner />;
+    const loading = loadingNow || loadingToday || loadingStats;
+
+    // Show skeleton while loading - provides instant visual feedback
+    if (loading && onDutyNow.length === 0) {
+        return (
+            <div className="min-h-screen bg-white dark:bg-gray-900">
+                {/* Hero Section - shows immediately */}
+                <section className="relative overflow-hidden bg-slate-900">
+                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[100px] animate-pulse-slow"></div>
+                        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-[100px] animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
+                    </div>
+                    <div className="container mx-auto px-4 py-16 pb-20 md:py-32 relative z-10">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <div className="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-md border border-slate-700/50 px-4 py-1.5 rounded-full mb-6 md:mb-8 mt-4 md:mt-0 shadow-lg ring-1 ring-white/10">
+                                <span className="relative flex h-2.5 w-2.5">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                                </span>
+                                <span className="text-slate-300 font-medium text-xs tracking-wide">خدمة على مدار 24 ساعة</span>
+                            </div>
+                            <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight tracking-tight">
+                                صيدليات <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">معرة النعمان</span>
+                                <br />
+                                <span className="text-slate-200">المناوبة</span>
+                            </h1>
+                            <p className="text-lg md:text-xl text-slate-400 mb-6 md:mb-10 leading-relaxed max-w-2xl mx-auto">
+                                المنصة الرسمية لمعرفة الصيدليات المناوبة وتوفر الأدوية في المدينة
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                {/* Skeleton for data sections */}
+                <HomePageSkeleton />
+            </div>
+        );
     }
 
     return (

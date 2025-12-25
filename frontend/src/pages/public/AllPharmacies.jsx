@@ -1,32 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { pharmacyService } from '../../services/pharmacyService';
 import PharmacyCard from '../../components/shared/PharmacyCard';
-import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import SkeletonCard from '../../components/shared/SkeletonCard';
+import { QUERY_KEYS } from '../../config/queryClient';
 
 const AllPharmacies = () => {
-    const [pharmacies, setPharmacies] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        fetchPharmacies();
-    }, []);
-
-    const fetchPharmacies = async () => {
-        try {
-            setLoading(true);
+    // Use React Query for caching - instant load on return visits
+    const { data: pharmaciesData, isLoading: loading, error } = useQuery({
+        queryKey: QUERY_KEYS.pharmacies,
+        queryFn: async () => {
             const data = await pharmacyService.getAll();
-            setPharmacies(data.data || data);
-        } catch (err) {
-            setError('حدث خطأ في تحميل الصيدليات');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+            return data.data || data;
+        },
+    });
 
+    const pharmacies = pharmaciesData || [];
+
+    // Show skeleton grid while loading
     if (loading) {
-        return <LoadingSpinner />;
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-12">
+                        <div className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-full mb-5 shadow-lg">
+                            <span className="text-2xl">💊</span>
+                            <span className="font-semibold">جميع الصيدليات</span>
+                        </div>
+                        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4">
+                            دليل الصيدليات
+                        </h1>
+                        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto animate-pulse"></div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[1, 2, 3, 4, 5, 6].map(i => (
+                            <SkeletonCard key={i} />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     return (

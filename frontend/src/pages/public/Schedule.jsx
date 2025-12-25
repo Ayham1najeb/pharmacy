@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const Schedule = () => {
-    const [schedules, setSchedules] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [selectedDate, setSelectedDate] = useState(null);
@@ -18,47 +17,39 @@ const Schedule = () => {
 
     const arabicDays = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 
-    useEffect(() => {
-        fetchSchedules();
-    }, [currentMonth, currentYear]);
-
-    const fetchSchedules = async () => {
-        setLoading(true);
-        try {
-            const response = await axios.get(
-                `${API_BASE}/api/v1/schedule/calendar/${currentMonth}/${currentYear}`
-            );
-            // API returns object grouped by date like { "2024-12-10": [...], "2024-12-11": [...] }
-            if (response.data && typeof response.data === 'object') {
-                setSchedules(response.data);
-            } else {
-                setSchedules({});
-            }
-        } catch (error) {
-            console.error('Error fetching schedules:', error);
-            // Try alternative endpoint
+    // Use React Query for caching - data stays fresh for 5 minutes per month
+    const { data: schedules = {}, isLoading: loading } = useQuery({
+        queryKey: ['schedules', currentMonth, currentYear],
+        queryFn: async () => {
             try {
-                const response = await axios.get(`${API_BASE}/api/v1/schedule`);
-                // This returns an array, convert to object
-                if (Array.isArray(response.data)) {
-                    const grouped = {};
-                    response.data.forEach(schedule => {
-                        const date = schedule.duty_date?.split('T')[0] || schedule.duty_date;
-                        if (!grouped[date]) grouped[date] = [];
-                        grouped[date].push(schedule);
-                    });
-                    setSchedules(grouped);
-                } else {
-                    setSchedules({});
+                const response = await axios.get(
+                    `${API_BASE}/api/v1/schedule/calendar/${currentMonth}/${currentYear}`
+                );
+                if (response.data && typeof response.data === 'object') {
+                    return response.data;
                 }
-            } catch (err) {
-                console.error('Error fetching schedules:', err);
-                setSchedules({});
+                return {};
+            } catch (error) {
+                // Try alternative endpoint
+                try {
+                    const response = await axios.get(`${API_BASE}/api/v1/schedule`);
+                    if (Array.isArray(response.data)) {
+                        const grouped = {};
+                        response.data.forEach(schedule => {
+                            const date = schedule.duty_date?.split('T')[0] || schedule.duty_date;
+                            if (!grouped[date]) grouped[date] = [];
+                            grouped[date].push(schedule);
+                        });
+                        return grouped;
+                    }
+                } catch (err) {
+                    console.error('Error fetching schedules:', err);
+                }
+                return {};
             }
-        } finally {
-            setLoading(false);
-        }
-    };
+        },
+        staleTime: 5 * 60 * 1000, // 5 minutes
+    });
 
     const getDaysInMonth = (month, year) => {
         return new Date(year, month, 0).getDate();

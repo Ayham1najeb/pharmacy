@@ -9,6 +9,7 @@ use App\Models\Pharmacy;
 use App\Models\DutySchedule;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class PharmacyController extends Controller
 {
@@ -57,15 +58,18 @@ class PharmacyController extends Controller
      */
     public function onDutyToday(): JsonResponse
     {
-        $schedules = DutySchedule::select(['id', 'pharmacy_id', 'duty_date'])
-            ->with(['pharmacy:id,name,owner_name,address,phone,neighborhood_id,latitude,longitude', 'pharmacy.neighborhood:id,name'])
-            ->whereDate('duty_date', '>=', now()->toDateString())
-            ->whereHas('pharmacy', function ($query) {
-                $query->where('is_active', true)->where('is_approved', true);
-            })
-            ->orderBy('duty_date', 'asc')
-            ->limit(9)
-            ->get();
+        // Cache for 3 minutes to reduce database load
+        $schedules = Cache::remember('on_duty_today', 180, function () {
+            return DutySchedule::select(['id', 'pharmacy_id', 'duty_date'])
+                ->with(['pharmacy:id,name,owner_name,address,phone,neighborhood_id,latitude,longitude', 'pharmacy.neighborhood:id,name'])
+                ->whereDate('duty_date', '>=', now()->toDateString())
+                ->whereHas('pharmacy', function ($query) {
+                    $query->where('is_active', true)->where('is_approved', true);
+                })
+                ->orderBy('duty_date', 'asc')
+                ->limit(9)
+                ->get();
+        });
 
         return response()->json(DutyScheduleResource::collection($schedules));
     }
@@ -75,12 +79,15 @@ class PharmacyController extends Controller
      */
     public function onDutyNow(): JsonResponse
     {
-        $schedules = DutySchedule::with(['pharmacy.neighborhood'])
-            ->current()
-            ->whereHas('pharmacy', function ($query) {
-                $query->active();
-            })
-            ->get();
+        // Cache for 1 minute - needs to be more real-time
+        $schedules = Cache::remember('on_duty_now', 60, function () {
+            return DutySchedule::with(['pharmacy.neighborhood'])
+                ->current()
+                ->whereHas('pharmacy', function ($query) {
+                    $query->active();
+                })
+                ->get();
+        });
 
         return response()->json($schedules);
     }

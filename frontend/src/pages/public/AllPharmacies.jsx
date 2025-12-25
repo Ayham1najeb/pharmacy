@@ -4,6 +4,7 @@ import { pharmacyService } from '../../services/pharmacyService';
 import PharmacyCard from '../../components/shared/PharmacyCard';
 import SkeletonCard from '../../components/shared/SkeletonCard';
 import { QUERY_KEYS } from '../../config/queryClient';
+import SEO from '../../components/SEO';
 
 const AllPharmacies = () => {
     // Use React Query for caching - instant load on return visits
@@ -21,6 +22,10 @@ const AllPharmacies = () => {
     if (loading) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12">
+                <SEO
+                    title="دليل الصيدليات"
+                    description="قائمة بجميع الصيدليات في معرة مصرين - اعثر على الصيدلية المناوبة وأقرب صيدلية إليك"
+                />
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
                         <div className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-full mb-5 shadow-lg">
@@ -44,6 +49,10 @@ const AllPharmacies = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12">
+            <SEO
+                title="دليل الصيدليات"
+                description="قائمة بجميع الصيدليات في معرة مصرين - اعثر على الصيدلية المناوبة وأقرب صيدلية إليك"
+            />
             <div className="container mx-auto px-4">
                 {/* Header */}
                 <div className="text-center mb-12">

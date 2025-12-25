@@ -7,6 +7,7 @@ import PharmacyCard from '../../components/shared/PharmacyCard';
 import { HomePageSkeleton } from '../../components/shared/SkeletonCard';
 import AnimatedCounter from '../../components/shared/AnimatedCounter';
 import { QUERY_KEYS } from '../../config/queryClient';
+import SEO from '../../components/SEO';
 
 const Home = () => {
     // Use React Query for automatic caching - data stays fresh for 3 minutes
@@ -31,6 +32,10 @@ const Home = () => {
     if (loading && onDutyNow.length === 0) {
         return (
             <div className="min-h-screen bg-white dark:bg-gray-900">
+                <SEO
+                    title="الرئيسية"
+                    description="صيدليات معرة مصرين المناوبة - المنصة الرسمية لمعرفة الصيدليات المناوبة وتوفر الأدوية في المدينة"
+                />
                 {/* Hero Section - shows immediately */}
                 <section className="relative overflow-hidden bg-slate-900">
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -65,6 +70,10 @@ const Home = () => {
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900">
+            <SEO
+                title="الرئيسية"
+                description="صيدليات معرة مصرين المناوبة - المنصة الرسمية لمعرفة الصيدليات المناوبة وتوفر الأدوية في المدينة"
+            />
             {/* Hero Section - Premium Modern */}
             <section className="relative overflow-hidden bg-slate-900">
                 {/* Abstract Background Effects */}
@@ -278,6 +287,27 @@ const Home = () => {
                                     <AnimatedCounter targetValue={stats.active_pharmacies || 0} duration={1500} />
                                 </div>
                                 <div className="text-slate-400 font-medium">صيدليات متوفرة</div>
+                            </div>
+                        </div>
+
+                        {/* SEO Content Section - Visible for Search Engines & Users */}
+                        <div className="mt-20 text-center relative z-10 border-t border-slate-800 pt-16">
+                            <div className="max-w-4xl mx-auto text-slate-400 text-sm leading-7 space-y-4">
+                                <h3 className="text-xl font-bold text-slate-300 mb-4">دليل صيدليات معرة النعمان - بوابتك الصحية الشاملة</h3>
+                                <p>
+                                    يعتبر موقع <strong>صيدليات معرة النعمان</strong> المنصة الأولى والرائدة في تقديم خدمات البحث عن
+                                    <Link to="/pharmacies" className="text-blue-400 hover:text-blue-300 mx-1">الصيدليات المناوبة في المعرة</Link>
+                                    وضواحيها. نسعى لتسهيل وصول المرضى إلى الدواء في أي وقت، ليلاً أو نهاراً، من خلال جدول محدث يومياً للمناوبات.
+                                </p>
+                                <p>
+                                    إذا كنت تبحث عن <strong>أرقام صيدليات معرة النعمان</strong>، أو <strong>أقرب صيدلية مفتوحة الآن</strong>،
+                                    فإن تطبيقنا يوفر لك خريطة تفاعلية وقائمة بجميع الصيدليات الفعالة. نغطي كافة الأحياء السكنية في مدينة معرة النعمان
+                                    وريف إدلب، ونعمل بالتنسيق مع الجهات الصحية لضمان دقة المعلومات.
+                                </p>
+                                <p className="text-slate-500 text-xs">
+                                    كلمات مفتاحية: صيدليات المعرة، عنوان صيدلية في المعرة، رقم هاتف صيدلية، مناوبات اليوم، صيدلية ليلية،
+                                    طب وصحة، دليل إدلب الطبي، خدمات اسعافية، صيدليات دوار السبع بحرات، صيدليات الحي الشمالي، صيدليات السوق.
+                                </p>
                             </div>
                         </div>
                     </div>

@@ -3,6 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import { pharmacyService } from '../../services/pharmacyService';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
+import SEO from '../../components/SEO';
+import { Helmet } from 'react-helmet-async';
+
 const PharmacyDetails = () => {
     const { id } = useParams();
     const [pharmacy, setPharmacy] = useState(null);
@@ -35,6 +38,12 @@ const PharmacyDetails = () => {
         window.open(`https://wa.me/${cleanPhone}`, '_blank');
     };
 
+    const handleGoogleMaps = () => {
+        if (pharmacy.latitude && pharmacy.longitude) {
+            window.open(`https://www.google.com/maps/dir/?api=1&destination=${pharmacy.latitude},${pharmacy.longitude}`, '_blank');
+        }
+    };
+
     if (loading) {
         return <LoadingSpinner />;
     }
@@ -55,8 +64,56 @@ const PharmacyDetails = () => {
         );
     }
 
+    // Structured Data JSON-LD
+    const structuredData = {
+        "@context": "https://schema.org",
+        "@type": "Pharmacy",
+        "name": pharmacy.name,
+        "image": "https://maarrat-pharmacy.com/logo.png", // Replace with actual logo URL if available
+        "telephone": pharmacy.phone,
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": pharmacy.address,
+            "addressLocality": "Maarrat Misrin",
+            "addressRegion": "Idlib",
+            "addressCountry": "SY"
+        },
+        "geo": pharmacy.latitude && pharmacy.longitude ? {
+            "@type": "GeoCoordinates",
+            "latitude": pharmacy.latitude,
+            "longitude": pharmacy.longitude
+        } : undefined,
+        "url": window.location.href,
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                    "Sunday"
+                ],
+                "opens": "00:00",
+                "closes": "23:59"
+            }
+        ]
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+            <SEO
+                title={pharmacy.name}
+                description={`تفاصيل صيدلية ${pharmacy.name} - ${pharmacy.address} - رقم الهاتف: ${pharmacy.phone}`}
+            />
+            <Helmet>
+                <script type="application/ld+json">
+                    {JSON.stringify(structuredData)}
+                </script>
+            </Helmet>
+
             <div className="container mx-auto px-4">
                 {/* Back Button */}
                 <Link
@@ -159,6 +216,16 @@ const PharmacyDetails = () => {
                                         <span className="text-2xl">💬</span>
                                         راسلنا على واتساب
                                     </button>
+
+                                    {pharmacy.latitude && pharmacy.longitude && (
+                                        <button
+                                            onClick={handleGoogleMaps}
+                                            className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl font-bold text-lg transition-all duration-200 hover:scale-105 shadow-lg"
+                                        >
+                                            <span className="text-2xl">🗺️</span>
+                                            عرض على الخريطة
+                                        </button>
+                                    )}
                                 </div>
 
                                 {/* Rating */}

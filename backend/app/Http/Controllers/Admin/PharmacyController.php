@@ -63,6 +63,9 @@ class PharmacyController extends Controller
         }
 
         $data = $request->except('image');
+        
+        // Auto-approve pharmacies created by admin
+        $data['is_approved'] = true;
 
         // Handle image upload
         if ($request->hasFile('image')) {

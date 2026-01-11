@@ -17,8 +17,7 @@ return [
         'http://localhost:5173',
         'http://127.0.0.1:3000',
         'http://127.0.0.1:5173',
-        'https://maarrat-pharmacy.onrender.com',
-        'https://maarrat-pharmacy-j21a.onrender.com',
+        'https://maarrat-pharmacy.onrender.com', // Production Frontend
     ],
 
     'allowed_origins_patterns' => ['https://*.onrender.com'],

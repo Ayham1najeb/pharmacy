@@ -16,6 +16,7 @@ L.Icon.Default.mergeOptions({
 const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
     const { token } = useAuth();
     const [loading, setLoading] = useState(false);
+    const [geocoding, setGeocoding] = useState(false);
     const [neighborhoods, setNeighborhoods] = useState([]);
 
     // Form State
@@ -78,7 +79,7 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
             return;
         }
 
-        setLoading(true);
+        setGeocoding(true);
         try {
             // Using Nominatim (OpenStreetMap) geocoding API
             const searchQuery = `${formData.address}, معرة النعمان, سوريا`;
@@ -120,7 +121,7 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
                 longitude: 36.6746
             }));
         } finally {
-            setLoading(false);
+            setGeocoding(false);
         }
     };
 

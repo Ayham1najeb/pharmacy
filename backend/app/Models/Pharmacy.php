@@ -31,8 +31,8 @@ class Pharmacy extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'is_approved' => 'boolean',
-        'latitude' => 'decimal:8',
-        'longitude' => 'decimal:8',
+        'latitude' => 'float',
+        'longitude' => 'float',
     ];
 
     protected $appends = [
@@ -50,7 +50,8 @@ class Pharmacy extends Model
             return null;
         }
         
-        return asset('storage/' . $this->image_path);
+        // Use url() to ensure full URL with domain
+        return url('storage/' . $this->image_path);
     }
 
     /**

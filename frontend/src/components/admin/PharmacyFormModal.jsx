@@ -16,7 +16,7 @@ L.Icon.Default.mergeOptions({
 const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
     const { token } = useAuth();
     const [loading, setLoading] = useState(false);
-    const [geocoding, setGeocoding] = useState(false);
+    const [isGeocoding, setIsGeocoding] = useState(false);
     const [neighborhoods, setNeighborhoods] = useState([]);
 
     // Form State
@@ -79,7 +79,7 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
             return;
         }
 
-        setGeocoding(true);
+        setIsGeocoding(true);
         try {
             // Using Nominatim (OpenStreetMap) geocoding API
             const searchQuery = `${formData.address}, معرة النعمان, سوريا`;
@@ -121,7 +121,7 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
                 longitude: 36.6746
             }));
         } finally {
-            setGeocoding(false);
+            setIsGeocoding(false);
         }
     };
 
@@ -293,11 +293,11 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
                             <button
                                 type="button"
                                 onClick={handleGeocodeAddress}
-                                disabled={geocoding || !formData.address}
+                                disabled={isGeocoding || !formData.address}
                                 className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 whitespace-nowrap"
                                 title="تحويل العنوان إلى موقع على الخريطة"
                             >
-                                {geocoding ? (
+                                {isGeocoding ? (
                                     <>
                                         <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                                         جاري البحث...

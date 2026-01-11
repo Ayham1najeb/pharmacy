@@ -195,11 +195,21 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
             // Create FormData for image upload
             const submitData = new FormData();
 
-            // Append all form fields
+            // Append all form fields with proper type handling
             Object.keys(formData).forEach(key => {
-                if (formData[key] !== null && formData[key] !== '') {
-                    submitData.append(key, formData[key]);
+                let value = formData[key];
+
+                // Skip null or empty strings
+                if (value === null || value === '') {
+                    return;
                 }
+
+                // Convert boolean to number (0 or 1) for backend
+                if (typeof value === 'boolean') {
+                    value = value ? 1 : 0;
+                }
+
+                submitData.append(key, value);
             });
 
             // Append image if selected
@@ -208,10 +218,10 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
             }
 
             if (pharmacy) {
-                // Update
+                // Update - add _method to FormData for Laravel
+                submitData.append('_method', 'PUT');
                 await axios.post(`/api/v1/admin/pharmacies/${pharmacy.id}`, submitData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                    params: { _method: 'PUT' }
+                    headers: { 'Content-Type': 'multipart/form-data' }
                 });
                 alert('تم تعديل الصيدلية بنجاح');
             } else {
@@ -224,8 +234,19 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
             onSuccess();
             onClose();
         } catch (error) {
-            console.error(error);
-            alert('حدث خطأ أثناء الحفظ. تأكد من صحة البيانات.');
+            console.error('Error details:', error.response?.data || error);
+
+            let errorMessage = 'حدث خطأ أثناء الحفظ.';
+
+            if (error.response?.data?.errors) {
+                // Laravel validation errors
+                const errors = Object.values(error.response.data.errors).flat();
+                errorMessage = errors.join('\n');
+            } else if (error.response?.data?.message) {
+                errorMessage = error.response.data.message;
+            }
+
+            alert('خطأ:\n' + errorMessage);
         } finally {
             setLoading(false);
         }

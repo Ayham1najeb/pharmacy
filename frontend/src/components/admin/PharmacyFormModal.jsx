@@ -19,6 +19,10 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
     const [isGeocoding, setIsGeocoding] = useState(false);
     const [neighborhoods, setNeighborhoods] = useState([]);
 
+    // Image upload state
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
+
     // Form State
     const [formData, setFormData] = useState({
         name: '',
@@ -55,6 +59,14 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
                 latitude: pharmacy.latitude || '',
                 longitude: pharmacy.longitude || ''
             });
+
+            // Set existing image preview if available
+            if (pharmacy.image_url) {
+                setImagePreview(pharmacy.image_url);
+            } else {
+                setImagePreview(null);
+            }
+            setSelectedImage(null);
         } else {
             // Reset form for create
             setFormData({
@@ -69,6 +81,8 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
                 latitude: '',
                 longitude: ''
             });
+            setImagePreview(null);
+            setSelectedImage(null);
         }
     }, [isOpen, pharmacy]);
 
@@ -153,6 +167,19 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedImage(file);
+            // Create preview
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -165,13 +192,33 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
         setLoading(true);
 
         try {
+            // Create FormData for image upload
+            const submitData = new FormData();
+
+            // Append all form fields
+            Object.keys(formData).forEach(key => {
+                if (formData[key] !== null && formData[key] !== '') {
+                    submitData.append(key, formData[key]);
+                }
+            });
+
+            // Append image if selected
+            if (selectedImage) {
+                submitData.append('image', selectedImage);
+            }
+
             if (pharmacy) {
                 // Update
-                await axios.put(`/api/v1/admin/pharmacies/${pharmacy.id}`, formData);
+                await axios.post(`/api/v1/admin/pharmacies/${pharmacy.id}`, submitData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    params: { _method: 'PUT' }
+                });
                 alert('تم تعديل الصيدلية بنجاح');
             } else {
                 // Create
-                await axios.post('/api/v1/admin/pharmacies', formData);
+                await axios.post('/api/v1/admin/pharmacies', submitData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
                 alert('تم إضافة الصيدلية بنجاح');
             }
             onSuccess();
@@ -230,6 +277,56 @@ const PharmacyFormModal = ({ isOpen, onClose, pharmacy = null, onSuccess }) => {
                             )}
                         </div>
                     </div>
+
+                    {/* Image Upload Section */}
+                    <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
+                        <label className="block text-sm font-bold text-gray-800 mb-3">
+                            🖼️ صورة الصيدلية (اختياري)
+                        </label>
+                        <div className="flex gap-4 items-start">
+                            {/* Image Preview */}
+                            {imagePreview && (
+                                <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-purple-200">
+                                    <img
+                                        src={imagePreview}
+                                        alt="Preview"
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setImagePreview(null);
+                                            setSelectedImage(null);
+                                        }}
+                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                            )}
+
+                            {/* Upload Button */}
+                            <div className="flex-1">
+                                <input
+                                    type="file"
+                                    id="pharmacy-image"
+                                    accept="image/jpeg,image/png,image/jpg,image/gif"
+                                    onChange={handleImageChange}
+                                    className="hidden"
+                                />
+                                <label
+                                    htmlFor="pharmacy-image"
+                                    className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 cursor-pointer transition-colors"
+                                >
+                                    {imagePreview ? '📷 تغيير الصورة' : '📷 اختر صورة'}
+                                </label>
+                                <p className="text-xs text-gray-500 mt-2">
+                                    💡 الحجم الأقصى: 2MB - الصيغ المدعومة: JPG, PNG, GIF
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">اسم الصيدلية</label>

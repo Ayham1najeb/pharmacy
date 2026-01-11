@@ -159,8 +159,19 @@ const PharmaciesManagement = () => {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredPharmacies.map((pharmacy) => (
-                            <div key={pharmacy.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow p-6 border-t-4 border-blue-500 flex flex-col justify-between">
-                                <div>
+                            <div key={pharmacy.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden border-t-4 border-blue-500 flex flex-col justify-between">
+                                {/* Pharmacy Image */}
+                                {pharmacy.image_url && (
+                                    <div className="w-full h-48 overflow-hidden bg-gray-100">
+                                        <img
+                                            src={pharmacy.image_url}
+                                            alt={pharmacy.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                )}
+
+                                <div className="p-6">
                                     <div className="flex items-start justify-between mb-4">
                                         <div>
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">{pharmacy.name}</h3>

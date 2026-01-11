@@ -55,15 +55,25 @@ class PharmacyController extends Controller
             'longitude' => 'nullable|numeric|between:-180,180',
             'is_active' => 'boolean',
             'notes' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $pharmacy = Pharmacy::create($request->all());
+        $data = $request->except('image');
 
-        // Log activity
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('pharmacies', $imageName, 'public');
+            $data['image_path'] = $imagePath;
+        }
+
+        $pharmacy = Pharmacy::create($data);
+
         // Log activity
         \Illuminate\Support\Facades\Log::info('Created pharmacy', [
             'user_id' => $request->user()->id,
@@ -103,15 +113,30 @@ class PharmacyController extends Controller
             'longitude' => 'nullable|numeric|between:-180,180',
             'is_active' => 'boolean',
             'notes' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $pharmacy->update($request->all());
+        $data = $request->except('image');
 
-        // Log activity
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($pharmacy->image_path && \Storage::disk('public')->exists($pharmacy->image_path)) {
+                \Storage::disk('public')->delete($pharmacy->image_path);
+            }
+
+            $image = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('pharmacies', $imageName, 'public');
+            $data['image_path'] = $imagePath;
+        }
+
+        $pharmacy->update($data);
+
         // Log activity
         \Illuminate\Support\Facades\Log::info('Updated pharmacy', [
             'user_id' => $request->user()->id,

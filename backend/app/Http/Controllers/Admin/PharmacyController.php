@@ -73,14 +73,25 @@ class PharmacyController extends Controller
             $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('pharmacies', $imageName, 'public');
             $data['image_path'] = $imagePath;
+            
+            \Log::info('Image uploaded', [
+                'path' => $imagePath,
+                'full_path' => storage_path('app/public/' . $imagePath)
+            ]);
         }
 
         $pharmacy = Pharmacy::create($data);
+        
+        // Refresh to get computed attributes like image_url
+        $pharmacy->refresh();
+        $pharmacy->load('neighborhood');
 
         // Log activity
         \Illuminate\Support\Facades\Log::info('Created pharmacy', [
             'user_id' => $request->user()->id,
-            'pharmacy_id' => $pharmacy->id
+            'pharmacy_id' => $pharmacy->id,
+            'has_image' => !empty($pharmacy->image_path),
+            'image_url' => $pharmacy->image_url
         ]);
 
         return response()->json($pharmacy, 201);
@@ -139,11 +150,17 @@ class PharmacyController extends Controller
         }
 
         $pharmacy->update($data);
+        
+        // Refresh to get updated computed attributes
+        $pharmacy->refresh();
+        $pharmacy->load('neighborhood');
 
         // Log activity
         \Illuminate\Support\Facades\Log::info('Updated pharmacy', [
             'user_id' => $request->user()->id,
-            'pharmacy_id' => $pharmacy->id
+            'pharmacy_id' => $pharmacy->id,
+            'has_image' => !empty($pharmacy->image_path),
+            'image_url' => $pharmacy->image_url
         ]);
 
         return response()->json($pharmacy);

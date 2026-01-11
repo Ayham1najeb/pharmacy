@@ -23,6 +23,7 @@ class DutyScheduleResource extends JsonResource
                 'owner_name' => $this->pharmacy?->owner_name,
                 'address' => $this->pharmacy?->address,
                 'phone' => $this->pharmacy?->phone,
+                'image_url' => $this->pharmacy?->image_url,
                 'latitude' => $this->pharmacy?->latitude,
                 'longitude' => $this->pharmacy?->longitude,
                 'neighborhood' => [

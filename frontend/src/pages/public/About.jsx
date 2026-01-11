@@ -29,7 +29,7 @@ const About = () => {
 
                     <div className="grid md:grid-cols-3 gap-8 border-t border-slate-100 dark:border-gray-700 pt-10">
                         <div className="text-center group">
-                            <div className="text-4xl font-black text-blue-600 dark:text-blue-400 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">24/7</div>
+                            <div className="text-4xl font-black text-blue-600 dark:text-blue-400 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">يومياً</div>
                             <p className="text-slate-500 dark:text-gray-400 font-medium">خدمة متواصلة</p>
                         </div>
                         <div className="text-center md:border-x border-slate-100 dark:border-gray-700 group">
@@ -83,12 +83,12 @@ const About = () => {
                                 <div className="p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors">
                                     <div className="text-3xl mb-4">📧</div>
                                     <h3 className="font-bold text-lg mb-2 text-white">البريد الإلكتروني</h3>
-                                    <p className="text-slate-300 text-sm">info@maarrat-pharmacy.sy</p>
+                                    <p className="text-slate-300 text-sm">ayhamoy2@gmail.com</p>
                                 </div>
                                 <div className="p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors">
                                     <div className="text-3xl mb-4">📱</div>
                                     <h3 className="font-bold text-lg mb-2 text-white">الهاتف</h3>
-                                    <p className="text-slate-300 text-sm" dir="ltr">+963 933 123 456</p>
+                                    <p className="text-slate-300 text-sm" dir="ltr">05519547382</p>
                                 </div>
                                 <div className="p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors">
                                     <div className="text-3xl mb-4">📍</div>

@@ -24,7 +24,7 @@ const AllPharmacies = () => {
             <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12">
                 <SEO
                     title="دليل الصيدليات"
-                    description="قائمة بجميع الصيدليات في معرة مصرين - اعثر على الصيدلية المناوبة وأقرب صيدلية إليك"
+                    description="قائمة بجميع الصيدليات في معرة النعمان - اعثر على الصيدلية المناوبة وأقرب صيدلية إليك"
                 />
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
@@ -51,7 +51,7 @@ const AllPharmacies = () => {
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12">
             <SEO
                 title="دليل الصيدليات"
-                description="قائمة بجميع الصيدليات في معرة مصرين - اعثر على الصيدلية المناوبة وأقرب صيدلية إليك"
+                description="قائمة بجميع الصيدليات في معرة النعمان - اعثر على الصيدلية المناوبة وأقرب صيدلية إليك"
             />
             <div className="container mx-auto px-4">
                 {/* Header */}

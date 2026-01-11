@@ -2,9 +2,9 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 const SEO = ({ title, description, keywords, image }) => {
-    const siteTitle = "صيدليات معرة مصرين";
+    const siteTitle = "صيدليات معرة النعمان";
     const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
-    const metaDescription = description || "دليل صيدليات معرة مصرين المناوبة - اعثر على أقرب صيدلية إليك بسهولة";
+    const metaDescription = description || "دليل صيدليات معرة النعمان المناوبة - اعثر على أقرب صيدلية إليك بسهولة";
 
     const defaultKeywords = "صيدليات المعرة, صيدليات معرة النعمان, صيدلية مناوبة, جدول المناوبات, ادوية المعرة, صحة معرة النعمان, ارقام صيدليات ادلب, دليل صيدليات المعرة, مناوبات الصيدليات اليوم, اقرب صيدلية, مستودعات ادوية, اسعار الادوية, البحث عن دواء, خفارة الصيدليات, الهيئة الصحية في ادلب, صيدليات ريف ادلب, الدوام الليلي للصيدليات, maarrat al-numan pharmacy, duty pharmacy idlib";
     const currentKeywords = keywords ? `${keywords}, ${defaultKeywords}` : defaultKeywords;

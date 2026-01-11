@@ -23,7 +23,7 @@ class PharmacyController extends Controller
         
         // Cache for 3 minutes - with filter-specific key
         $pharmacies = Cache::remember($cacheKey, 180, function () use ($request) {
-            $query = Pharmacy::select(['id', 'name', 'owner_name', 'phone', 'address', 'neighborhood_id', 'latitude', 'longitude'])
+            $query = Pharmacy::select(['id', 'name', 'owner_name', 'phone', 'address', 'neighborhood_id', 'latitude', 'longitude', 'image_path', 'is_active'])
                 ->with('neighborhood:id,name')
                 ->where('is_active', true)
                 ->where('is_approved', true);
@@ -66,13 +66,13 @@ class PharmacyController extends Controller
         // Cache for 3 minutes to reduce database load
         $schedules = Cache::remember('on_duty_today', 180, function () {
             return DutySchedule::select(['id', 'pharmacy_id', 'duty_date'])
-                ->with(['pharmacy:id,name,owner_name,address,phone,neighborhood_id,latitude,longitude', 'pharmacy.neighborhood:id,name'])
+                ->with(['pharmacy:id,name,owner_name,address,phone,neighborhood_id,latitude,longitude,image_path,is_active', 'pharmacy.neighborhood:id,name'])
                 ->whereDate('duty_date', '>=', now()->toDateString())
                 ->whereHas('pharmacy', function ($query) {
                     $query->where('is_active', true)->where('is_approved', true);
                 })
                 ->orderBy('duty_date', 'asc')
-                ->limit(9)
+                ->limit(60)
                 ->get();
         });
 

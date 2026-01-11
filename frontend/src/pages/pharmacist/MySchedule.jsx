@@ -9,9 +9,10 @@ const MySchedule = () => {
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         duty_date: '',
-        shift_type: 'full',
+        shift_type: 'day',
         notes: '',
     });
+
     const [message, setMessage] = useState({ type: '', text: '' });
 
     useEffect(() => {
@@ -72,7 +73,7 @@ const MySchedule = () => {
     };
 
     const resetForm = () => {
-        setFormData({ duty_date: '', shift_type: 'full', notes: '' });
+        setFormData({ duty_date: '', shift_type: 'day', notes: '' });
         setEditingId(null);
         setShowForm(false);
     };
@@ -96,8 +97,8 @@ const MySchedule = () => {
                         <button
                             onClick={() => setShowForm(!showForm)}
                             className={`px-5 py-2.5 text-sm font-medium rounded-lg shadow-sm transition-all border ${showForm
-                                    ? 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
-                                    : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700'
+                                ? 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+                                : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700'
                                 }`}
                         >
                             {showForm ? 'إلغاء' : '+ إضافة مناوبة'}
@@ -108,8 +109,8 @@ const MySchedule = () => {
                 {/* Messages */}
                 {message.text && (
                     <div className={`mb-8 p-4 rounded-lg flex items-center gap-3 text-sm font-medium ${message.type === 'success'
-                            ? 'bg-emerald-50 text-emerald-800 border border-emerald-100'
-                            : 'bg-red-50 text-red-800 border border-red-100'
+                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-100'
+                        : 'bg-red-50 text-red-800 border border-red-100'
                         }`}>
                         <span className="text-lg">{message.type === 'success' ? '✅' : '⚠️'}</span>
                         {message.text}
@@ -143,7 +144,6 @@ const MySchedule = () => {
                                         required
                                         className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                                     >
-                                        <option value="full">كامل (24 ساعة)</option>
                                         <option value="day">نهاري</option>
                                         <option value="night">ليلي</option>
                                     </select>
@@ -229,8 +229,8 @@ const MySchedule = () => {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium border ${schedule.shift_type === 'full' ? 'bg-purple-50 text-purple-700 border-purple-100' :
-                                                        schedule.shift_type === 'day' ? 'bg-amber-50 text-amber-700 border-amber-100' :
-                                                            'bg-indigo-50 text-indigo-700 border-indigo-100'
+                                                    schedule.shift_type === 'day' ? 'bg-amber-50 text-amber-700 border-amber-100' :
+                                                        'bg-indigo-50 text-indigo-700 border-indigo-100'
                                                     }`}>
                                                     {schedule.shift_type === 'full' && 'كامل (24 ساعة)'}
                                                     {schedule.shift_type === 'day' && 'نهاري'}

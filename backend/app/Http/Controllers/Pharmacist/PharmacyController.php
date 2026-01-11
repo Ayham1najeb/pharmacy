@@ -149,5 +149,87 @@ class PharmacyController extends Controller
             'data' => $schedules
         ]);
     }
+
+    /**
+     * Upload pharmacy image
+     */
+    public function uploadImage(Request $request)
+    {
+        $pharmacy = Pharmacy::where('user_id', $request->user()->id)->first();
+
+        if (!$pharmacy) {
+            return response()->json([
+                'success' => false,
+                'message' => 'لم يتم العثور على صيدلية مرتبطة بحسابك'
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ], [
+            'image.required' => 'الصورة مطلوبة',
+            'image.image' => 'الملف يجب أن يكون صورة',
+            'image.mimes' => 'الصورة يجب أن تكون من نوع: jpeg, png, jpg, webp',
+            'image.max' => 'حجم الصورة يجب ألا يتجاوز 2 ميغابايت',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Delete old image if exists
+        if ($pharmacy->image_path) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($pharmacy->image_path);
+        }
+
+        // Store the new image
+        $path = $request->file('image')->store('pharmacies', 'public');
+
+        $pharmacy->update(['image_path' => $path]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم رفع صورة الصيدلية بنجاح',
+            'data' => [
+                'image_url' => $pharmacy->image_url,
+                'image_path' => $path
+            ]
+        ]);
+    }
+
+    /**
+     * Delete pharmacy image
+     */
+    public function deleteImage(Request $request)
+    {
+        $pharmacy = Pharmacy::where('user_id', $request->user()->id)->first();
+
+        if (!$pharmacy) {
+            return response()->json([
+                'success' => false,
+                'message' => 'لم يتم العثور على صيدلية مرتبطة بحسابك'
+            ], 404);
+        }
+
+        if (!$pharmacy->image_path) {
+            return response()->json([
+                'success' => false,
+                'message' => 'لا توجد صورة لحذفها'
+            ], 404);
+        }
+
+        // Delete the image file
+        \Illuminate\Support\Facades\Storage::disk('public')->delete($pharmacy->image_path);
+
+        $pharmacy->update(['image_path' => null]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم حذف صورة الصيدلية بنجاح'
+        ]);
+    }
 }
 

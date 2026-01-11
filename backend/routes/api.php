@@ -141,6 +141,8 @@ Route::prefix('v1/pharmacist')->middleware(['auth:sanctum', 'role:pharmacist'])-
     // Pharmacy info
     Route::get('/pharmacy', [App\Http\Controllers\Pharmacist\PharmacyController::class, 'show']);
     Route::put('/pharmacy', [App\Http\Controllers\Pharmacist\PharmacyController::class, 'update']);
+    Route::post('/pharmacy/image', [App\Http\Controllers\Pharmacist\PharmacyController::class, 'uploadImage']);
+    Route::delete('/pharmacy/image', [App\Http\Controllers\Pharmacist\PharmacyController::class, 'deleteImage']);
     Route::get('/schedules', [App\Http\Controllers\Pharmacist\PharmacyController::class, 'schedules']);
     
     // Profile Management

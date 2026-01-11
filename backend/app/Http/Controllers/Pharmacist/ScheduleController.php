@@ -7,6 +7,8 @@ use App\Models\DutySchedule;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Cache;
+
 class ScheduleController extends Controller
 {
     /**
@@ -46,7 +48,7 @@ class ScheduleController extends Controller
 
         $validated = $request->validate([
             'duty_date' => 'required|date',
-            'shift_type' => 'required|in:day,night,full',
+            'shift_type' => 'required|in:day,night',
             'notes' => 'nullable|string|max:500',
         ]);
 
@@ -76,6 +78,10 @@ class ScheduleController extends Controller
         // Add virtual attribute for response
         $schedule->shift_type = $validated['shift_type'];
 
+        // Clear cache
+        Cache::forget('on_duty_today');
+        Cache::forget('on_duty_now');
+
         return response()->json([
             'message' => 'تم إضافة المناوبة بنجاح',
             'schedule' => $schedule,
@@ -101,7 +107,7 @@ class ScheduleController extends Controller
 
         $validated = $request->validate([
             'duty_date' => 'required|date',
-            'shift_type' => 'required|in:day,night,full',
+            'shift_type' => 'required|in:day,night',
             'notes' => 'nullable|string|max:500',
         ]);
 
@@ -128,6 +134,10 @@ class ScheduleController extends Controller
         ]);
 
         $schedule->shift_type = $validated['shift_type'];
+
+        // Clear cache
+        Cache::forget('on_duty_today');
+        Cache::forget('on_duty_now');
 
         return response()->json([
             'message' => 'تم تحديث المناوبة بنجاح',
@@ -166,6 +176,10 @@ class ScheduleController extends Controller
         }
 
         $schedule->delete();
+
+        // Clear cache
+        Cache::forget('on_duty_today');
+        Cache::forget('on_duty_now');
 
         return response()->json([
             'message' => 'تم حذف المناوبة بنجاح',

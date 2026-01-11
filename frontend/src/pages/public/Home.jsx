@@ -26,6 +26,12 @@ const Home = () => {
         queryFn: () => apiService.get('/api/v1/statistics'),
     });
 
+    // Fetch featured pharmacies (first 6)
+    const { data: featuredPharmacies = [], isLoading: loadingFeatured } = useQuery({
+        queryKey: ['pharmacies', 'featured'],
+        queryFn: () => pharmacyService.getAll(),
+    });
+
     const loading = loadingNow || loadingToday || loadingStats;
 
     // Show skeleton while loading - provides instant visual feedback
@@ -34,7 +40,7 @@ const Home = () => {
             <div className="min-h-screen bg-white dark:bg-gray-900">
                 <SEO
                     title="الرئيسية"
-                    description="صيدليات معرة مصرين المناوبة - المنصة الرسمية لمعرفة الصيدليات المناوبة وتوفر الأدوية في المدينة"
+                    description="صيدليات معرة النعمان المناوبة - المنصة الرسمية لمعرفة الصيدليات المناوبة وتوفر الأدوية في المدينة"
                 />
                 {/* Hero Section - shows immediately */}
                 <section className="relative overflow-hidden bg-slate-900">
@@ -49,7 +55,7 @@ const Home = () => {
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                                 </span>
-                                <span className="text-slate-300 font-medium text-xs tracking-wide">خدمة على مدار 24 ساعة</span>
+                                <span className="text-slate-300 font-medium text-xs tracking-wide">خدمة مناوبات يومية</span>
                             </div>
                             <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight tracking-tight">
                                 صيدليات <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">معرة النعمان</span>
@@ -72,7 +78,7 @@ const Home = () => {
         <div className="min-h-screen bg-white dark:bg-gray-900">
             <SEO
                 title="الرئيسية"
-                description="صيدليات معرة مصرين المناوبة - المنصة الرسمية لمعرفة الصيدليات المناوبة وتوفر الأدوية في المدينة"
+                description="صيدليات معرة النعمان المناوبة - المنصة الرسمية لمعرفة الصيدليات المناوبة وتوفر الأدوية في المدينة"
             />
             {/* Hero Section - Premium Modern */}
             <section className="relative overflow-hidden bg-slate-900">
@@ -93,7 +99,7 @@ const Home = () => {
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                             </span>
-                            <span className="text-slate-300 font-medium text-xs tracking-wide">خدمة على مدار 24 ساعة</span>
+                            <span className="text-slate-300 font-medium text-xs tracking-wide">خدمة مناوبات يومية</span>
                         </div>
 
                         {/* Main Title */}
@@ -124,32 +130,54 @@ const Home = () => {
 
             </section>
 
-            {/* Stats Section */}
-            {/* Stats Section */}
-            <section className="py-16 bg-gray-50 dark:bg-gray-800">
+            {/* Featured Pharmacies Section */}
+            <section className="py-20 bg-gray-50 dark:bg-gray-800">
                 <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                        <div className="bg-white dark:bg-gray-900 rounded-xl p-8 text-center shadow-lg border border-gray-200 dark:border-gray-700">
-                            <div className="text-5xl font-black text-blue-600 dark:text-blue-400 mb-2">
-                                <AnimatedCounter targetValue={onDutyToday.filter(s => new Date(s.duty_date).toDateString() === new Date().toDateString()).length} duration={1200} />
-                            </div>
-                            <div className="text-gray-600 dark:text-gray-400 font-semibold">صيدليات مناوبة اليوم</div>
+                    <div className="mb-12">
+                        <div className="inline-flex items-center gap-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-4 py-2 rounded-full mb-4">
+                            <span className="font-semibold text-sm">🏪 صيدليات مميزة</span>
                         </div>
-
-                        <div className="bg-white dark:bg-gray-900 rounded-xl p-8 text-center shadow-lg border border-gray-200 dark:border-gray-700">
-                            <div className="text-5xl font-black text-green-600 dark:text-green-400 mb-2">
-                                <AnimatedCounter targetValue={onDutyNow.length} duration={1200} />
-                            </div>
-                            <div className="text-gray-600 dark:text-gray-400 font-semibold">مفتوحة الآن</div>
-                        </div>
-
-                        <div className="bg-white dark:bg-gray-900 rounded-xl p-8 text-center shadow-lg border border-gray-200 dark:border-gray-700">
-                            <div className="text-5xl font-black text-purple-600 dark:text-purple-400 mb-2">
-                                24/7
-                            </div>
-                            <div className="text-gray-600 dark:text-gray-400 font-semibold">خدمة متواصلة</div>
-                        </div>
+                        <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">جميع الصيدليات</h2>
+                        <p className="text-lg text-gray-600 dark:text-gray-400">تصفح جميع الصيدليات المتوفرة في معرة النعمان</p>
                     </div>
+
+                    {loadingFeatured ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {[1, 2, 3, 4, 5, 6].map(i => (
+                                <div key={i} className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-96"></div>
+                            ))}
+                        </div>
+                    ) : featuredPharmacies.length > 0 ? (
+                        <>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                                {featuredPharmacies.slice(0, 6).map(pharmacy => (
+                                    <PharmacyCard
+                                        key={pharmacy.id}
+                                        pharmacy={pharmacy}
+                                    />
+                                ))}
+                            </div>
+
+                            {featuredPharmacies.length > 6 && (
+                                <div className="text-center mt-8">
+                                    <Link
+                                        to="/pharmacies"
+                                        className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+                                    >
+                                        <span>عرض جميع الصيدليات</span>
+                                        <span className="text-xl">←</span>
+                                    </Link>
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        <div className="text-center py-16">
+                            <div className="inline-block p-12 bg-white dark:bg-gray-900 rounded-2xl">
+                                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">لا توجد صيدليات متاحة حالياً</h3>
+                                <p className="text-gray-500 dark:text-gray-400">يرجى التحقق لاحقاً</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -188,15 +216,14 @@ const Home = () => {
                 <div className="container mx-auto px-4">
                     <div className="mb-12">
                         <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-4 py-2 rounded-full mb-4">
-                            <span className="font-semibold text-sm">الأيام القادمة</span>
+                            <span className="font-semibold text-sm">جدول المناوبات</span>
                         </div>
-                        <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">المناوبات القادمة</h2>
-                        <p className="text-lg text-gray-600 dark:text-gray-400">جدول المناوبات للأيام القادمة</p>
+                        <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">مناوبات اليوم والأيام القادمة</h2>
+                        <p className="text-lg text-gray-600 dark:text-gray-400">جدول المناوبات لليوم والأيام القادمة</p>
                     </div>
-                    {onDutyToday.filter(s => new Date(s.duty_date).toDateString() !== new Date().toDateString()).length > 0 ? (
+                    {onDutyToday.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {onDutyToday
-                                .filter(s => new Date(s.duty_date).toDateString() !== new Date().toDateString())
                                 .map(schedule => (
                                     <PharmacyCard
                                         key={schedule.id}
@@ -214,6 +241,34 @@ const Home = () => {
                             </div>
                         </div>
                     )}
+                </div>
+            </section>
+
+            {/* Stats Section */}
+            <section className="py-16 bg-white dark:bg-gray-900">
+                <div className="container mx-auto px-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center shadow-lg border border-gray-200 dark:border-gray-700">
+                            <div className="text-5xl font-black text-blue-600 dark:text-blue-400 mb-2">
+                                <AnimatedCounter targetValue={onDutyToday.filter(s => new Date(s.duty_date).toDateString() === new Date().toDateString()).length} duration={1200} />
+                            </div>
+                            <div className="text-gray-600 dark:text-gray-400 font-semibold">صيدليات مناوبة اليوم</div>
+                        </div>
+
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center shadow-lg border border-gray-200 dark:border-gray-700">
+                            <div className="text-5xl font-black text-green-600 dark:text-green-400 mb-2">
+                                <AnimatedCounter targetValue={onDutyNow.length} duration={1200} />
+                            </div>
+                            <div className="text-gray-600 dark:text-gray-400 font-semibold">مفتوحة الآن</div>
+                        </div>
+
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center shadow-lg border border-gray-200 dark:border-gray-700">
+                            <div className="text-5xl font-black text-purple-600 dark:text-purple-400 mb-2">
+                                يومياً
+                            </div>
+                            <div className="text-gray-600 dark:text-gray-400 font-semibold">تحديث مستمر</div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -273,8 +328,8 @@ const Home = () => {
                         {/* Additional Info Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="bg-slate-800/30 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 hover:bg-slate-800/50 transition-colors duration-300">
-                                <div className="text-4xl font-black text-white mb-2">24/7</div>
-                                <div className="text-slate-400 font-medium">خدمة متواصلة</div>
+                                <div className="text-4xl font-black text-white mb-2">يومياً</div>
+                                <div className="text-slate-400 font-medium">تحديث مستمر</div>
                             </div>
                             <div className="bg-slate-800/30 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 hover:bg-slate-800/50 transition-colors duration-300">
                                 <div className="text-4xl font-black text-white mb-2">

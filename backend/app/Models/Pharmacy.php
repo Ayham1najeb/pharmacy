@@ -25,6 +25,7 @@ class Pharmacy extends Model
         'is_active',
         'is_approved',
         'notes',
+        'image_path',
     ];
 
     protected $casts = [
@@ -37,7 +38,20 @@ class Pharmacy extends Model
     protected $appends = [
         'average_rating',
         'reviews_count',
+        'image_url',
     ];
+
+    /**
+     * Get the full URL for the pharmacy image.
+     */
+    public function getImageUrlAttribute(): ?string
+    {
+        if (!$this->image_path) {
+            return null;
+        }
+        
+        return asset('storage/' . $this->image_path);
+    }
 
     /**
      * Get the neighborhood that owns the pharmacy.

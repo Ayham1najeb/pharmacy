@@ -9,25 +9,48 @@ const PharmacyCard = ({ pharmacy, showSchedule = false, date = null }) => {
 
     return (
         <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700">
-            {/* Header */}
-            <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 px-8 py-6">
-                <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                        <h3 className="text-2xl font-bold text-white mb-1.5">
-                            {pharmacy.name}
-                        </h3>
-                        <p className="text-blue-100 flex items-center gap-2">
-                            <span className="text-lg">👨‍⚕️</span>
-                            <span>د. {pharmacy.owner_name}</span>
-                        </p>
-                    </div>
-                    {pharmacy.is_active && (
-                        <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
-                            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                            <span className="text-white font-semibold text-sm">فعال</span>
-                        </div>
-                    )}
+            {/* Pharmacy Image with Info Overlay */}
+            <div className="relative h-56 w-full overflow-hidden bg-gradient-to-br from-blue-100 to-blue-200 dark:from-gray-700 dark:to-gray-800">
+                {pharmacy.image_url ? (
+                    <img
+                        src={pharmacy.image_url}
+                        alt={pharmacy.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                        }}
+                    />
+                ) : null}
+                <div
+                    className={`absolute inset-0 flex flex-col items-center justify-center text-blue-500 dark:text-blue-400 ${pharmacy.image_url ? 'hidden' : 'flex'}`}
+                    style={{ display: pharmacy.image_url ? 'none' : 'flex' }}
+                >
+                    <span className="text-6xl mb-2">🏪</span>
+                    <span className="text-sm font-medium text-blue-600/70 dark:text-blue-400/70">صيدلية</span>
                 </div>
+
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+
+                {/* Pharmacy Info Overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <h3 className="text-xl font-bold mb-1 drop-shadow-lg">
+                        {pharmacy.name}
+                    </h3>
+                    <p className="text-white/90 flex items-center gap-1.5 text-sm drop-shadow">
+                        <span>👨‍⚕️</span>
+                        <span>د. {pharmacy.owner_name}</span>
+                    </p>
+                </div>
+
+                {/* Status Badge */}
+                {pharmacy.is_active && (
+                    <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-green-500/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg">
+                        <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        <span className="text-white font-semibold text-xs">مفتوح</span>
+                    </div>
+                )}
             </div>
 
             {/* Content */}

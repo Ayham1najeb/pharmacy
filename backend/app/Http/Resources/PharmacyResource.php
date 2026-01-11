@@ -22,6 +22,10 @@ class PharmacyResource extends JsonResource
             'address' => $this->address,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
+            'is_active' => $this->is_active,
+            'image_url' => $this->image_url,
+            'average_rating' => $this->average_rating,
+            'reviews_count' => $this->reviews_count,
             'neighborhood' => [
                 'id' => $this->neighborhood?->id,
                 'name' => $this->neighborhood?->name,

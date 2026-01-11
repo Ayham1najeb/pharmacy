@@ -50,8 +50,8 @@ class Pharmacy extends Model
             return null;
         }
         
-        // Use url() to ensure full URL with domain
-        return url('storage/' . $this->image_path);
+        // Use Storage facade for proper URL generation
+        return \Storage::disk('public')->url($this->image_path);
     }
 
     /**

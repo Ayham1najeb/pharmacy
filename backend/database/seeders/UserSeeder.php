@@ -17,12 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@maarrat-pharmacy.sy',
             'password' => bcrypt('password123'),
-        ]);
-
-        User::create([
-            'name' => 'Moderator',
-            'email' => 'moderator@maarrat-pharmacy.sy',
-            'password' => bcrypt('password123'),
+            'role' => 'admin',
         ]);
     }
 }
